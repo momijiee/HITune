@@ -5,7 +5,7 @@ import json
 from pathlib import Path
 from typing import Iterable
 
-from .assets import VOICE_ASSETS
+from .assets import VOICE_ASSET_VARIANTS
 from .moss import DEFAULT_CODEC_PATH, DEFAULT_MODEL_PATH, MossTTSConfig, MossTTSEngine
 
 
@@ -27,7 +27,7 @@ def _build_parser() -> argparse.ArgumentParser:
     )
     parser.add_argument("--max-new-tokens", type=int, default=128)
     parser.add_argument("--bitrate", default="128k")
-    parser.add_argument("--language", default="Chinese")
+    parser.add_argument("--language", help="Language tag passed to MOSS-TTS.")
     parser.add_argument("--reference", help="Optional reference audio for voice cloning.")
     parser.add_argument("--tokens", type=int, help="Optional duration token target.")
 
@@ -56,6 +56,12 @@ def _build_parser() -> argparse.ArgumentParser:
         help="Output directory for --preset or --manifest mode.",
     )
     parser.add_argument(
+        "--variant",
+        default="mandarin",
+        choices=["mandarin", "cantonese", "all"],
+        help="Voice asset language variant for --preset mode.",
+    )
+    parser.add_argument(
         "--instruction",
         help="Speaking style instruction. If omitted in --preset mode, each asset uses its planned emotion.",
     )
@@ -73,26 +79,59 @@ def _load_manifest(path: Path) -> list[dict]:
     return data
 
 
-def _iter_jobs(args: argparse.Namespace) -> Iterable[tuple[str, str, str | None, int | None, int]]:
+def _iter_jobs(
+    args: argparse.Namespace,
+) -> Iterable[tuple[str, str, str | None, str, int | None, int]]:
     if args.text:
         output = args.output or Path("voice_assets/custom.mp3")
-        yield str(output), args.text, args.instruction, args.tokens, args.max_new_tokens
+        yield (
+            str(output),
+            args.text,
+            args.instruction,
+            args.language or "Chinese",
+            args.tokens,
+            args.max_new_tokens,
+        )
         return
 
     if args.preset == "mvp":
-        for asset in VOICE_ASSETS:
-            instruction = args.instruction or asset["instruction"]
-            tokens = args.tokens if args.tokens is not None else asset["tokens"]
-            max_new_tokens = min(args.max_new_tokens, asset["max_new_tokens"])
-            yield str(args.output_dir / asset["filename"]), asset["text"], instruction, tokens, max_new_tokens
+        variants = (
+            VOICE_ASSET_VARIANTS.keys()
+            if args.variant == "all"
+            else (args.variant,)
+        )
+        for variant in variants:
+            variant_config = VOICE_ASSET_VARIANTS[variant]
+            language = args.language or variant_config["language"]
+            output_dir = args.output_dir / variant if args.variant == "all" else args.output_dir
+            for asset in variant_config["assets"]:
+                instruction = args.instruction or asset["instruction"]
+                tokens = args.tokens if args.tokens is not None else asset["tokens"]
+                max_new_tokens = min(args.max_new_tokens, asset["max_new_tokens"])
+                yield (
+                    str(output_dir / asset["filename"]),
+                    asset["text"],
+                    instruction,
+                    language,
+                    tokens,
+                    max_new_tokens,
+                )
         return
 
     if args.manifest:
         for item in _load_manifest(args.manifest):
             instruction = args.instruction or item.get("instruction")
+            language = args.language or item.get("language") or "Chinese"
             tokens = args.tokens if args.tokens is not None else item.get("tokens")
             max_new_tokens = int(item.get("max_new_tokens", args.max_new_tokens))
-            yield str(args.output_dir / item["filename"]), item["text"], instruction, tokens, max_new_tokens
+            yield (
+                str(args.output_dir / item["filename"]),
+                item["text"],
+                instruction,
+                language,
+                tokens,
+                max_new_tokens,
+            )
 
 
 def main() -> None:
@@ -109,12 +148,12 @@ def main() -> None:
     )
     engine = MossTTSEngine(config)
 
-    for output, text, instruction, tokens, max_new_tokens in _iter_jobs(args):
+    for output, text, instruction, language, tokens, max_new_tokens in _iter_jobs(args):
         path = engine.synthesize_mp3(
             text,
             Path(output),
             instruction=instruction,
-            language=args.language,
+            language=language,
             reference=args.reference,
             tokens=tokens,
             max_new_tokens=max_new_tokens,

@@ -41,7 +41,7 @@ uv sync --python 3.12
 
 ## 生成第一阶段音频
 
-按 `docs/PLAN.md` 和 `docs/VOICE_ASSETS.md` 生成 `0001.mp3` 到 `0005.mp3`：
+按 `docs/PLAN.md` 和 `docs/VOICE_ASSETS.md` 生成 `0001.mp3` 到 `0005.mp3`。默认生成普通话版本：
 
 ```bash
 CUDA_VISIBLE_DEVICES=4 uv run python scripts/generate_tts.py --preset mvp --output-dir voice_assets --device cuda
@@ -50,6 +50,23 @@ CUDA_VISIBLE_DEVICES=4 uv run python scripts/generate_tts.py --preset mvp --outp
 这里 `CUDA_VISIBLE_DEVICES=4` 表示只使用逻辑第 4 张、物理第 5 张 GPU；进程内仍显示为 `cuda:0`。
 
 生成后把 `voice_assets/0001.mp3` 到 `voice_assets/0005.mp3` 复制到 TF 卡根目录。
+
+需要阳光、温柔、统一风格的普通话和粤语两版时，使用：
+
+```bash
+CUDA_VISIBLE_DEVICES=4 uv run python scripts/generate_tts.py \
+  --preset mvp \
+  --variant all \
+  --output-dir voice_assets \
+  --device cuda
+```
+
+输出目录为：
+
+- `voice_assets/mandarin/0001.mp3` 到 `voice_assets/mandarin/0005.mp3`
+- `voice_assets/cantonese/0001.mp3` 到 `voice_assets/cantonese/0005.mp3`
+
+粤语版本会显式传入 MOSS-TTS-v1.5 的 `language="Cantonese"` 标签。
 
 ## 生成自定义文本
 
@@ -68,5 +85,6 @@ CUDA_VISIBLE_DEVICES=4 uv run python scripts/generate_tts.py \
 - `--reference`：参考音频路径，用于克隆指定音色。
 - `--device`：`auto`、`cuda` 或 `cpu`。
 - `--dtype`：`auto`、`bfloat16`、`float16` 或 `float32`。
+- `--variant`：预设语音版本，`mandarin`、`cantonese` 或 `all`。
 
 脚本固定使用 CUDA `sdpa` 或 CPU `eager` attention，不会选择 `flash_attention_2`。
