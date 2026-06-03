@@ -105,7 +105,7 @@ int main(void)
 
         current_id = Voice_Module_ReadID();
         StateEvent_t cur_event = EVENT_NONE;
-
+			
         // 1. 硬件层去重与事件映射
         if(current_id != 0x00 && current_id != last_id)
         {
@@ -484,4 +484,23 @@ void StateMachine_Process(StateEvent_t event)
             g_current_state = ST_WAKE;
             break;
     }
+}
+
+void uart_debug_send_string(char* str) {
+    while(*str != '\0')
+    {
+        while(DL_UART_isBusy(UART_INST) == true);
+        DL_UART_Main_transmitData(UART_INST, *str++);
+    }
+}
+
+void uart_debug_print_hex8(uint8_t val) {
+    char high = (char)((val >> 4) & 0x0F);
+    char low  = (char)(val & 0x0F);
+
+    while(DL_UART_isBusy(UART_INST) == true);
+    DL_UART_Main_transmitData(UART_INST, high < 10 ? high + '0' : high - 10 + 'A');
+
+    while(DL_UART_isBusy(UART_INST) == true);
+    DL_UART_Main_transmitData(UART_INST, low < 10 ? low + '0' : low - 10 + 'A');
 }
