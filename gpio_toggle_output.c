@@ -1,33 +1,91 @@
 #include "ti_msp_dl_config.h"
 #include "bsp_voice.h"
+#include "bsp_player.h"
 
-#define delay_ms(X)		delay_cycles((CPUCLK_FREQ/1000)*(X));
+// 毫秒延时宏定义
+#define delay_ms(X)        delay_cycles((CPUCLK_FREQ/1000)*(X))
 
-volatile unsigned int delay_times = 0;
-volatile unsigned char uart_data = 0;
+// 调试串口辅助函数声明（用于在电脑串口助手看日志）
+void uart_debug_send_string(char* str);
+void uart_debug_print_hex8(uint8_t val);
 
-void uart_send_char(char ch);
-void uart_send_string(char* str);
-uint8_t Voice_Module_ReadID(void);
-
-// 1. 定义播放器控制指令（十六进制数组）
-uint8_t CMD_PLAY[10]  = {0x7E, 0xFF, 0x06, 0x03, 0x00, 0x00, 0x01, 0xFE, 0xF7, 0xEF};
-uint8_t CMD_PLAY2[10]  = {0x7E, 0xFF, 0x06, 0x03, 0x00, 0x00, 0x02, 0xFE, 0xF6, 0xEF};
-uint8_t CMD_PAUSE[10] = {0x7E, 0xFF, 0x06, 0x0E, 0x00, 0x00, 0x00, 0xFE, 0xED, 0xEF};
-
-// 2. 专门向播放器发送 Hex 指令的函数
-void uart_plr_send_hex(uint8_t *cmd, uint8_t len)
+int main(void)
 {
-    for(uint8_t i = 0; i < len; i++)
+    // 1. 初始化 MSPM0 的所有外设（SysConfig 中的配置在此处生效）
+    SYSCFG_DL_init();
+
+    // 2. 上电打印提示信息
+    uart_debug_send_string("===========================================\r\n");
+    uart_debug_send_string("  MSPM0 Smart Voice-Player Demo Start...   \r\n");
+    uart_debug_send_string("===========================================\r\n");
+
+    // 3. 初始化播放器默认设置（比如上电先初始化音量为 20 级）
+    Player_SetVolume(20);
+    uart_debug_send_string("-> Player Init: Volume set to 20\r\n");
+
+    uint8_t current_id = 0x00;
+    uint8_t last_id = 0x00;
+
+    while(1)
     {
-        // 等待 UART_PLR 发送缓冲区空闲
-        while(DL_UART_isBusy(UART_PLR_INST) == true);
-        // 通过指定的 UART_PLR 实例发送单个字节
-        DL_UART_Main_transmitData(UART_PLR_INST, cmd[i]);
+        // 心跳灯：每 100ms 闪烁一次，同时作为主循环的轮询周期
+        DL_GPIO_togglePins(LED1_PORT, LED1_PIN_22_PIN);
+        delay_ms(100); 
+
+        // 从 I2C 语音模块读取当前触发的 ID
+        current_id = Voice_Module_ReadID();
+
+        // 状态机：只有当识别到新有效指令，且与上一次不同时才触发（防止持续按住或不松口时重复发送串口指令）
+        if(current_id != 0x00 && current_id != last_id)
+        {
+            // 打印当前捕获到的真实硬件语音 ID
+            uart_debug_send_string("Voice Triggered! ID: 0x");
+            uart_debug_print_hex8(current_id);
+            uart_debug_send_string("\r\n");
+
+            // 根据不同的语音 ID 映射对应的播放器动作
+            switch(current_id)
+            {
+                case 0x1C: // 露一手
+                    uart_debug_send_string("-> Action: Play Voice (Folder 00, Track 1)\r\n");
+                    Player_PlayVoice(1); // 播放 00 文件夹下的第 0001 首曲目
+                    break;
+								
+                case 0x21: // 战斗模式
+                    uart_debug_send_string("-> Action: Play Music (Folder 01, Track 1)\r\n");
+                    Player_PlayMusic(1); // 播放 01 文件夹下的第 0005 首歌曲
+                    break;
+
+                case 0x09: // 停止
+                    uart_debug_send_string("-> Action: PAUSE\r\n");
+                    Player_Pause();      // 暂停当前音频
+                    break;
+
+                case 0x01: // 前进
+                    uart_debug_send_string("-> Action: Set Volume to 20\r\n");
+                    Player_SetVolume(20); 
+                    break;
+
+                case 0x02: // 前进
+                    uart_debug_send_string("-> Action: Set Volume to 10\r\n");
+                    Player_SetVolume(10); 
+                    break;
+
+                default:
+                    uart_debug_send_string("-> Warning: Unhandled Voice ID\r\n");
+                    break;
+            }
+        }
+
+        // 更新状态：松开语音或未识别时，current_id 返回 0x00，last_id 随之清零，等待下一次唤醒
+        last_id = current_id; 
     }
 }
 
-// 3. 原有的调试串口字符串打印（保留用于在电脑端看日志）
+/******************************************************************
+ * 函 数 名 称：uart_debug_send_string
+ * 函 数 说 明：向电脑调试串口打印字符串
+ ******************************************************************/
 void uart_debug_send_string(char* str)
 {
     while(*str != '\0')
@@ -37,132 +95,20 @@ void uart_debug_send_string(char* str)
     }
 }
 
-int main(void)
-{
-    // 初始化 MSPM0 的所有外设（SysConfig 里的配置在这里生效）
-    SYSCFG_DL_init();
-
-    uart_debug_send_string("MSPM0 Voice Control Player MVP Start...\r\n");
-
-    uint8_t current_id = 0x00;
-    uint8_t last_id = 0x00;
-
-    while(1)
-    {
-        // 心跳灯，每 100ms 轮询一次，响应更灵敏
-        DL_GPIO_togglePins(LED1_PORT, LED1_PIN_22_PIN);
-        delay_ms(100); 
-
-        // 从 I2C 语音模块读取当前触发的 ID
-        current_id = Voice_Module_ReadID();
-
-        // 状态机：只有当识别到新有效指令，且与上一次不同时才触发（防止重复发送指令）
-        if(current_id != 0x00 && current_id != last_id)
-        {
-						// 修改这里：直接打印原始字节的高 4 位和低 4 位
-						uart_send_string("True Hardware ID: 0x");
-						uint8_t true_high = (current_id >> 4) & 0x0F;
-						uint8_t true_low = current_id & 0x0F;
-						uart_send_char(true_high < 10 ? true_high + '0' : true_high - 10 + 'A');
-						uart_send_char(true_low < 10 ? true_low + '0' : true_low - 10 + 'A');
-						uart_send_string("\r\n");
-            switch(current_id)
-            {
-                case 0x1C: // 假设 ID 0x01 对应关键词 “播放”
-                    uart_debug_send_string("-> Action: PLAY\r\n");
-                    // 核心动作：向播放器发送 10 字节的播放命令
-                    uart_plr_send_hex(CMD_PLAY, 10); 
-                    break;
-								
-								case 0x21: 
-                    uart_debug_send_string("-> Action: PLAY\r\n");
-                    // 核心动作：向播放器发送 10 字节的播放命令
-                    uart_plr_send_hex(CMD_PLAY2, 10); 
-                    break;
-
-                case 0x09: // 假设 ID 0x02 对应关键词 “暂停”
-                    uart_debug_send_string("-> Action: PAUSE\r\n");
-                    // 核心动作：向播放器发送 10 字节的暂停命令
-                    uart_plr_send_hex(CMD_PAUSE, 10); 
-                    break;
-
-                default:
-                    uart_debug_send_string("-> Unknown Voice ID\r\n");
-                    break;
-            }
-        }
-
-        // 更新状态，松开语音后如果返回 0x00，last_id 也会清零，等待下一次唤醒
-        last_id = current_id; 
-    }
-}
-
 /******************************************************************
- * 函 数 名 称：Voice_Module_ReadID
- * 函 数 说 明：从语音识别模块读取当前识别到的关键词 ID
- * 函 数 返 回：0x00 代表未识别到；其余值（如0x01, 0x02）为识别到的ID
+ * 函 数 名 称：uart_debug_print_hex8
+ * 函 数 说 明：以十六进制格式打印一个字节（例如 0x1C 打印出 "1C"）
  ******************************************************************/
-uint8_t Voice_Module_ReadID(void)
+void uart_debug_print_hex8(uint8_t val)
 {
-    uint8_t voice_id = 0x00;
-
-    // ---- 步骤 1：向从机告知我们要读取的寄存器地址 ----
-    IIC_Start();
-    IIC_Write(VOICE_MODULE_ADDR << 1); // 发送从机写地址 (0x34 << 1 = 0x68)
-    if(IIC_Wait_Ack() == 1) {
-        return 0x00; // 模块无应答，直接返回
-    }
-
-    IIC_Write(REG_VOICE_RESULT);       // 发送识别结果寄存器地址 (0x64)
-    if(IIC_Wait_Ack() == 1) {
-        return 0x00;
-    }
-
-    // ---- 步骤 2：切换为读模式，获取 1 字节的数据 ----
-    IIC_Start();                       // 重新发送起始信号 (Restart)
-    IIC_Write((VOICE_MODULE_ADDR << 1) | 1); // 发送从机读地址 (0x69)
-    if(IIC_Wait_Ack() == 1) {
-        return 0x00;
-    }
-
-    voice_id = IIC_Read();             // 读取 1 个字节的识别结果
-    IIC_Send_Ack(1);                   // 读完最后一个字节，给从机发送 NACK (非应答)
-    IIC_Stop();                        // 结束通信
-
-    return voice_id;
-}
-
-// 串口发送字符串辅助函数
-void uart_send_string(char* str)
-{
-    while(*str != '\0')
-    {
-        while(DL_UART_isBusy(UART_INST) == true);
-        DL_UART_Main_transmitData(UART_INST, *str++);
-    }
-}
-
-// 串口发送单个字符（用于打印十六进制数）
-void uart_send_char(char ch)
-{
+    char high = (val >> 4) & 0x0F;
+    char low  = val & 0x0F;
+    
+    // 发送高 4 位
     while(DL_UART_isBusy(UART_INST) == true);
-    DL_UART_Main_transmitData(UART_INST, ch);
-}
-
-//?????????
-void UART_INST_IRQHandler(void)
-{
-    //?????????
-    switch( DL_UART_getPendingInterrupt(UART_INST) )
-    {
-        case DL_UART_IIDX_RX://???????
-            //??????????????
-            uart_data = DL_UART_Main_receiveData(UART_INST);
-            //???????????
-            uart_send_char(uart_data);
-            break;
-
-        default://???????
-            break;
-    }
+    DL_UART_Main_transmitData(UART_INST, high < 10 ? high + '0' : high - 10 + 'A');
+    
+    // 发送低 4 位
+    while(DL_UART_isBusy(UART_INST) == true);
+    DL_UART_Main_transmitData(UART_INST, low < 10 ? low + '0' : low - 10 + 'A');
 }

@@ -424,6 +424,16 @@
               <FileType>1</FileType>
               <FilePath>..\BSP\bsp_voice.c</FilePath>
             </File>
+            <File>
+              <FileName>bsp_player.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp_player.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_player.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\bsp_player.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

@@ -1,4 +1,4 @@
-./objects/gpio_toggle_output.o: ..\gpio_toggle_output.c \
+./objects/bsp_player.o: ..\BSP\bsp_player.c ..\BSP\bsp_player.h \
   ..\ti_msp_dl_config.h ..\..\..\..\..\..\source\ti\devices\msp\msp.h \
   ..\..\..\..\..\..\source\ti\devices\DeviceFamily.h \
   ..\..\..\..\..\..\source\ti\devices\msp\m0p\mspm0g350x.h \
@@ -90,5 +90,4 @@
   ..\..\..\..\..\..\source\ti\driverlib\dl_vref.h \
   ..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h \
   ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h \
-  ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h \
-  ..\BSP\bsp_voice.h ..\BSP\bsp_player.h
+  ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h

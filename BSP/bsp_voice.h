@@ -3,12 +3,13 @@
 
 #include "ti_msp_dl_config.h" // 确保引入了 TI 官方宏定义
 
-// 语音模块设备信息
+// ---- 语音模块设备信息 ----
 #define VOICE_MODULE_ADDR   (0x34)  // 从机地址
 #define REG_VOICE_RESULT    (0x64)  // 语音识别结果寄存器
 
+// ---- 软件 I2C 引脚控制宏定义 ----
 // 1. 设置 SDA 为输出模式 (使用 SysConfig 生成的 IOMUX 宏)
-#define SDA_OUT()   {                                                \
+#define SDA_OUT()   {                                                       \
                         DL_GPIO_initDigitalOutput(I2C_SDA_IOMUX);    \
                         DL_GPIO_setPins(I2C_PORT, I2C_SDA_PIN);      \
                         DL_GPIO_enableOutput(I2C_PORT, I2C_SDA_PIN); \
@@ -27,7 +28,7 @@
 // 微秒延时定义 (如果主频是32MHz，此处可用 SDK 自带的 delay_cycles)
 #define delay_us(x)  delay_cycles((x) * 32) 
 
-// 声明底层时序函数
+// ---- 底层 I2C 时序函数声明 ----
 void IIC_Start(void);
 void IIC_Stop(void);
 void IIC_Send_Ack(uint8_t ack);
@@ -35,7 +36,12 @@ uint8_t IIC_Wait_Ack(void);
 void IIC_Write(uint8_t data);
 uint8_t IIC_Read(void);
 
-// 声明上层业务函数：读取语音ID
+// ---- 上层业务函数声明 ----
+/**
+ * @brief  从 I2C 语音识别模块读取当前识别到的关键词 ID
+ * @param  无
+ * @retval 0x00 代表未识别到；其余值（如0x1C, 0x21, 0x09）为识别到的ID
+ */
 uint8_t Voice_Module_ReadID(void);
 
-#endif
+#endif /* __BSP_VOICE_H__ */
