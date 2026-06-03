@@ -1,0 +1,13 @@
+.venv/
+__pycache__/
+*.py[cod]
+.python-version
+uv.lock
+*.egg-info/
+.uv-cache/
+.cache/
+
+# Generated TTS outputs are reproducible from docs/VOICE_ASSETS.md.
+voice_assets/
+*.mp3
+*.wav

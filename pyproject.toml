@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "hitune"
+version = "0.1.0"
+description = "HITune firmware project utilities, including MOSS-TTS voice asset generation."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "einops==0.8.1",
+    "librosa==0.11.0",
+    "modelscope>=1.31.0",
+    "ninja",
+    "numpy==2.1.0",
+    "orjson==3.11.4",
+    "packaging",
+    "psutil",
+    "pyyaml==6.0.3",
+    "safetensors==0.6.2",
+    "scipy==1.16.2",
+    "setuptools",
+    "socksio>=1.0.0",
+    "tiktoken==0.12.0",
+    "torch==2.9.1+cu128",
+    "torchaudio==2.9.1+cu128",
+    "torchcodec==0.8.1",
+    "tqdm==4.67.1",
+    "transformers==5.0.0",
+    "wheel",
+]
+
+[project.scripts]
+hitune-generate-tts = "hitune_tts.cli:main"
+
+[tool.setuptools.packages.find]
+include = ["hitune_tts*"]
+
+[tool.uv]
+required-version = ">=0.4.0"
+package = true
+
+[[tool.uv.index]]
+name = "pytorch-cu128"
+url = "https://download.pytorch.org/whl/cu128"
+explicit = true
+
+[tool.uv.sources]
+torch = { index = "pytorch-cu128" }
+torchaudio = { index = "pytorch-cu128" }
+torchcodec = { index = "pytorch-cu128" }
