@@ -9,5 +9,3 @@ uv.lock
 
 # Generated TTS outputs are reproducible from docs/VOICE_ASSETS.md.
 voice_assets/
-*.mp3
-*.wav
