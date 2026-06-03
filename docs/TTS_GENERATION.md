@@ -68,6 +68,14 @@ CUDA_VISIBLE_DEVICES=4 uv run python scripts/generate_tts.py \
 
 粤语版本会显式传入 MOSS-TTS-v1.5 的 `language="Cantonese"` 标签。
 
+生成脚本在转 MP3 时会使用 `ffmpeg loudnorm` 做响度归一化，默认目标为 `I=-18.0`、`LRA=7.0`、`TP=-1.5`，避免不同语音条目的听感音量明显不一致。
+
+如果只需要重新归一化已有 MP3，不重跑模型，可使用：
+
+```bash
+uv run python scripts/normalize_voice_assets.py --root voice_assets
+```
+
 ## 生成自定义文本
 
 ```bash

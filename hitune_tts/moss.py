@@ -24,6 +24,9 @@ class MossTTSConfig:
     dtype: str = "auto"
     max_new_tokens: int = 128
     bitrate: str = "128k"
+    loudness_i: float = -18.0
+    loudness_lra: float = 7.0
+    loudness_tp: float = -1.5
 
 
 class MossTTSEngine:
@@ -159,6 +162,12 @@ class MossTTSEngine:
             "error",
             "-i",
             os.fspath(wav_path),
+            "-af",
+            (
+                f"loudnorm=I={self.config.loudness_i}:"
+                f"LRA={self.config.loudness_lra}:"
+                f"TP={self.config.loudness_tp}:linear=true"
+            ),
             "-codec:a",
             "libmp3lame",
             "-b:a",
