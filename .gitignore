@@ -7,4 +7,4 @@ uv.lock
 .uv-cache/
 .cache/
 
-# Generated TTS outputs are reproducible from docs/VOICE_ASSETS.md.
+# Generated TTS outputs are kept in git for TF card deployment.

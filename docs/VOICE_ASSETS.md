@@ -47,6 +47,21 @@
 | 1 | 疲惫情绪后播放 | 舒缓、低节奏、音量平稳的纯音乐 |
 | 2 | 开心情绪后播放 | 轻快、明亮、短循环也不突兀的纯音乐 |
 
+## 生成结果
+
+已使用 MOSS-TTS-v1.5 生成阳光、温柔、统一风格的两套语音资产：
+
+- 普通话：`voice_assets/mandarin/0001.mp3` 到 `voice_assets/mandarin/0020.mp3`
+- 粤语：`voice_assets/cantonese/0001.mp3` 到 `voice_assets/cantonese/0020.mp3`
+
+生成命令：
+
+```bash
+CUDA_VISIBLE_DEVICES=4 uv run python scripts/generate_tts.py --preset mvp --variant all --output-dir voice_assets --device cuda
+```
+
+这里 `CUDA_VISIBLE_DEVICES=4` 表示只使用逻辑第 4 张、物理第 5 张 GPU。MP3 文件按当前部署要求纳入 git 追踪，便于直接同步到 TF 卡。
+
 ## 制作要求
 
 - 语音文件放在 TF 卡语音文件夹或根目录，按当前 MP3-TF-16P 接线和播放模式保持 `0001.mp3` 到 `0020.mp3`。
