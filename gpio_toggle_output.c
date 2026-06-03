@@ -5,9 +5,78 @@
 // 毫秒延时宏定义
 #define delay_ms(X)        delay_cycles((CPUCLK_FREQ/1000)*(X))
 
+typedef enum {
+    VOICE_STATE_IDLE = 0,
+    VOICE_STATE_GREETING,
+    VOICE_STATE_SELF_INTRO,
+    VOICE_STATE_TIRED_RESPONSE,
+    VOICE_STATE_HAPPY_RESPONSE,
+    VOICE_STATE_GOODBYE
+} voice_state_t;
+
+typedef struct {
+    uint8_t command_id;
+    voice_state_t state;
+    uint16_t track;
+    char* state_name;
+} voice_command_map_t;
+
+#define VOICE_CMD_GREETING        (0x1A)
+#define VOICE_CMD_SELF_INTRO      (0x1B)
+#define VOICE_CMD_TIRED_RESPONSE  (0x1C)
+#define VOICE_CMD_HAPPY_RESPONSE  (0x1D)
+#define VOICE_CMD_GOODBYE         (0x1E)
+
+static const voice_command_map_t voice_command_map[] = {
+    {VOICE_CMD_GREETING,       VOICE_STATE_GREETING,       1, "GREETING"},
+    {VOICE_CMD_SELF_INTRO,     VOICE_STATE_SELF_INTRO,     2, "SELF_INTRO"},
+    {VOICE_CMD_TIRED_RESPONSE, VOICE_STATE_TIRED_RESPONSE, 3, "TIRED_RESPONSE"},
+    {VOICE_CMD_HAPPY_RESPONSE, VOICE_STATE_HAPPY_RESPONSE, 4, "HAPPY_RESPONSE"},
+    {VOICE_CMD_GOODBYE,        VOICE_STATE_GOODBYE,        5, "GOODBYE"},
+};
+
 // 调试串口辅助函数声明（用于在电脑串口助手看日志）
 void uart_debug_send_string(char* str);
 void uart_debug_print_hex8(uint8_t val);
+
+static const voice_command_map_t* voice_find_command(uint8_t command_id)
+{
+    for(uint8_t i = 0; i < (sizeof(voice_command_map) / sizeof(voice_command_map[0])); i++)
+    {
+        if(voice_command_map[i].command_id == command_id)
+        {
+            return &voice_command_map[i];
+        }
+    }
+
+    return 0;
+}
+
+static void voice_state_handle_command(uint8_t command_id, voice_state_t* current_state)
+{
+    const voice_command_map_t* command = voice_find_command(command_id);
+
+    uart_debug_send_string("Voice Triggered! ID: 0x");
+    uart_debug_print_hex8(command_id);
+    uart_debug_send_string("\r\n");
+
+    if(command == 0)
+    {
+        uart_debug_send_string("-> Warning: Unhandled Voice ID\r\n");
+        *current_state = VOICE_STATE_IDLE;
+        return;
+    }
+
+    *current_state = command->state;
+    uart_debug_send_string("-> State: ");
+    uart_debug_send_string(command->state_name);
+    uart_debug_send_string("\r\n");
+
+    Player_PlayVoice(command->track);
+
+    *current_state = VOICE_STATE_IDLE;
+    uart_debug_send_string("-> State: IDLE\r\n");
+}
 
 int main(void)
 {
@@ -16,69 +85,34 @@ int main(void)
 
     // 2. 上电打印提示信息
     uart_debug_send_string("===========================================\r\n");
-    uart_debug_send_string("  MSPM0 Smart Voice-Player Demo Start...   \r\n");
+    uart_debug_send_string("  MSPM0 Voice Conversation MVP Start...    \r\n");
     uart_debug_send_string("===========================================\r\n");
 
-    // 3. 初始化播放器默认设置（比如上电先初始化音量为 20 级）
+    // 3. 初始化播放器默认设置
     Player_SetVolume(20);
     uart_debug_send_string("-> Player Init: Volume set to 20\r\n");
 
     uint8_t current_id = 0x00;
     uint8_t last_id = 0x00;
+    voice_state_t current_state = VOICE_STATE_IDLE;
 
     while(1)
     {
         // 心跳灯：每 100ms 闪烁一次，同时作为主循环的轮询周期
         DL_GPIO_togglePins(LED1_PORT, LED1_PIN_22_PIN);
-        delay_ms(100); 
+        delay_ms(100);
 
         // 从 I2C 语音模块读取当前触发的 ID
         current_id = Voice_Module_ReadID();
 
-        // 状态机：只有当识别到新有效指令，且与上一次不同时才触发（防止持续按住或不松口时重复发送串口指令）
+        // 只有当识别到新有效指令，且与上一次不同时才触发，避免重复播放
         if(current_id != 0x00 && current_id != last_id)
         {
-            // 打印当前捕获到的真实硬件语音 ID
-            uart_debug_send_string("Voice Triggered! ID: 0x");
-            uart_debug_print_hex8(current_id);
-            uart_debug_send_string("\r\n");
-
-            // 根据不同的语音 ID 映射对应的播放器动作
-            switch(current_id)
-            {
-                case 0x1C: // 露一手
-                    uart_debug_send_string("-> Action: Play Voice (Folder 00, Track 1)\r\n");
-                    Player_PlayVoice(1); // 播放 00 文件夹下的第 0001 首曲目
-                    break;
-								
-                case 0x21: // 战斗模式
-                    uart_debug_send_string("-> Action: Play Music (Folder 01, Track 1)\r\n");
-                    Player_PlayMusic(1); // 播放 01 文件夹下的第 0005 首歌曲
-                    break;
-
-                case 0x09: // 停止
-                    uart_debug_send_string("-> Action: PAUSE\r\n");
-                    Player_Pause();      // 暂停当前音频
-                    break;
-
-                case 0x01: // 前进
-                    uart_debug_send_string("-> Action: Set Volume to 20\r\n");
-                    Player_SetVolume(20); 
-                    break;
-
-                case 0x02: // 前进
-                    uart_debug_send_string("-> Action: Set Volume to 10\r\n");
-                    Player_SetVolume(10); 
-                    break;
-
-                default:
-                    uart_debug_send_string("-> Warning: Unhandled Voice ID\r\n");
-                    break;
-            }
+            voice_state_handle_command(current_id, &current_state);
         }
 
-        // 更新状态：松开语音或未识别时，current_id 返回 0x00，last_id 随之清零，等待下一次唤醒
-        last_id = current_id; 
+        // 松开语音或未识别时，current_id 返回 0x00，last_id 随之清零，等待下一次唤醒
+        last_id = current_id;
     }
 }
 
@@ -103,11 +137,11 @@ void uart_debug_print_hex8(uint8_t val)
 {
     char high = (val >> 4) & 0x0F;
     char low  = val & 0x0F;
-    
+
     // 发送高 4 位
     while(DL_UART_isBusy(UART_INST) == true);
     DL_UART_Main_transmitData(UART_INST, high < 10 ? high + '0' : high - 10 + 'A');
-    
+
     // 发送低 4 位
     while(DL_UART_isBusy(UART_INST) == true);
     DL_UART_Main_transmitData(UART_INST, low < 10 ? low + '0' : low - 10 + 'A');
