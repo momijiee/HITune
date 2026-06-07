@@ -122,7 +122,7 @@ int main(void)
             if(g_current_state != ST_IDLE && g_current_state != ST_SILENT_GUARD)
             {
                 g_timeout_counter++;
-                if(g_timeout_counter >= 100) // 100 * 100ms = 10s
+                if(g_timeout_counter >= 250) // 100 * 100ms = 10s
                 {
                     cur_event = EVENT_TIMEOUT;
                     g_timeout_counter = 0;
