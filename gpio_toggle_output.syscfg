@@ -77,15 +77,12 @@ GPIO3.port                           = "PORTA";
 GPIO3.$name                          = "DS1302";
 GPIO3.associatedPins.create(3);
 GPIO3.associatedPins[0].initialValue = "SET";
-GPIO3.associatedPins[0].$name        = "CLK";
 GPIO3.associatedPins[0].assignedPin  = "23";
-GPIO3.associatedPins[0].pin.$assign  = "PA23";
-GPIO3.associatedPins[1].$name        = "DAT";
+GPIO3.associatedPins[0].$name        = "SCLK";
 GPIO3.associatedPins[1].assignedPin  = "24";
-GPIO3.associatedPins[1].pin.$assign  = "PA24";
-GPIO3.associatedPins[2].$name        = "RST";
+GPIO3.associatedPins[1].$name        = "IO";
 GPIO3.associatedPins[2].assignedPin  = "25";
-GPIO3.associatedPins[2].pin.$assign  = "PA25";
+GPIO3.associatedPins[2].$name        = "CE";
 
 PWM1.$name                              = "PWM";
 PWM1.peripheral.$assign                 = "TIMA1";
@@ -146,9 +143,12 @@ UART2.rxPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric3";
  * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
  * re-solve from scratch.
  */
-ADC121.peripheral.$suggestSolution         = "ADC0";
-ADC121.peripheral.adcPin0.$suggestSolution = "PA27";
-Board.peripheral.$suggestSolution          = "DEBUGSS";
-Board.peripheral.swclkPin.$suggestSolution = "PA20";
-Board.peripheral.swdioPin.$suggestSolution = "PA19";
-PWM1.peripheral.ccp1Pin.$suggestSolution   = "PA16";
+ADC121.peripheral.$suggestSolution           = "ADC0";
+ADC121.peripheral.adcPin0.$suggestSolution   = "PA27";
+Board.peripheral.$suggestSolution            = "DEBUGSS";
+Board.peripheral.swclkPin.$suggestSolution   = "PA20";
+Board.peripheral.swdioPin.$suggestSolution   = "PA19";
+GPIO3.associatedPins[0].pin.$suggestSolution = "PA23";
+GPIO3.associatedPins[1].pin.$suggestSolution = "PA24";
+GPIO3.associatedPins[2].pin.$suggestSolution = "PA25";
+PWM1.peripheral.ccp1Pin.$suggestSolution     = "PA16";

@@ -1,4 +1,5 @@
 #include "bsp_ds1302.h"
+#include "board.h"
 
 #define DS1302_CMD_SECONDS      (0x80)
 #define DS1302_CMD_MINUTES      (0x82)
@@ -12,9 +13,13 @@
 
 #define DS1302_CONTROL_WP       (0x80)
 #define DS1302_SECONDS_CH       (0x80)
+#define DS1302_RAM_INIT_ADDR    (0x00)
+#define DS1302_RAM_INIT_MARK    (0xA5)
 
-#define DS1302_DELAY_US         (2)
-#define DS1302_DELAY()          delay_cycles((CPUCLK_FREQ / 1000000U) * DS1302_DELAY_US)
+//#define DS1302_DELAY_US         (2)
+//#define DS1302_DELAY()          delay_cycles((CPUCLK_FREQ / 1000000U) * DS1302_DELAY_US)
+#define DS1302_DELAY()          delay_us(2)
+
 
 static void DS1302_CE(uint8_t level)
 {
@@ -70,6 +75,11 @@ static uint8_t DS1302_FromBCD(uint8_t value)
     return (uint8_t)(((value >> 4U) * 10U) + (value & 0x0FU));
 }
 
+static uint8_t DS1302_RamCommand(uint8_t address)
+{
+    return (uint8_t)(0xC0U | ((address & 0x1FU) << 1U));
+}
+
 static void DS1302_WriteByteLSB(uint8_t value)
 {
     uint8_t i;
@@ -86,26 +96,49 @@ static void DS1302_WriteByteLSB(uint8_t value)
     }
 }
 
+static void DS1302_WriteReadCommand(uint8_t command)
+{
+    uint8_t i;
+
+    command |= 0x01U;
+    DS1302_IO_Output();
+    for(i = 0; i < 8U; i++) {
+        DS1302_IO(command & 0x01U);
+        DS1302_DELAY();
+        DS1302_SCLK(1);
+        DS1302_DELAY();
+
+        if(i == 7U) {
+            DS1302_IO_Input();
+        } else {
+            DS1302_SCLK(0);
+            DS1302_DELAY();
+        }
+
+        command >>= 1U;
+    }
+}
+
 static uint8_t DS1302_ReadByteLSB(void)
 {
     uint8_t i;
     uint8_t value = 0;
 
-    DS1302_IO_Input();
     for(i = 0; i < 8U; i++) {
-        if(DS1302_IO_Read()) {
-            value |= (uint8_t)(1U << i);
-        }
         DS1302_SCLK(1);
         DS1302_DELAY();
         DS1302_SCLK(0);
         DS1302_DELAY();
+
+        if(DS1302_IO_Read()) {
+            value |= (uint8_t)(1U << i);
+        }
     }
 
     return value;
 }
 
-static void DS1302_WriteRegister(uint8_t command, uint8_t value)
+void DS1302_WriteRegister(uint8_t command, uint8_t value)
 {
     DS1302_CE(0);
     DS1302_SCLK(0);
@@ -118,7 +151,7 @@ static void DS1302_WriteRegister(uint8_t command, uint8_t value)
     DS1302_DELAY();
 }
 
-static uint8_t DS1302_ReadRegister(uint8_t command)
+uint8_t DS1302_ReadRegister(uint8_t command)
 {
     uint8_t value;
 
@@ -127,7 +160,7 @@ static uint8_t DS1302_ReadRegister(uint8_t command)
     DS1302_DELAY();
 
     DS1302_CE(1);
-    DS1302_WriteByteLSB(command | 0x01U);
+    DS1302_WriteReadCommand(command);
     value = DS1302_ReadByteLSB();
     DS1302_CE(0);
     DS1302_IO_Output();
@@ -135,6 +168,16 @@ static uint8_t DS1302_ReadRegister(uint8_t command)
     DS1302_DELAY();
 
     return value;
+}
+
+static void DS1302_WriteRamByte(uint8_t address, uint8_t value)
+{
+    DS1302_WriteRegister(DS1302_RamCommand(address), value);
+}
+
+static uint8_t DS1302_ReadRamByte(uint8_t address)
+{
+    return DS1302_ReadRegister(DS1302_RamCommand(address));
 }
 
 static void DS1302_ReadClockBurst(uint8_t *buffer)
@@ -146,7 +189,7 @@ static void DS1302_ReadClockBurst(uint8_t *buffer)
     DS1302_DELAY();
 
     DS1302_CE(1);
-    DS1302_WriteByteLSB(DS1302_CMD_CLOCK_BURST | 0x01U);
+    DS1302_WriteReadCommand(DS1302_CMD_CLOCK_BURST);
     for(i = 0; i < 8U; i++) {
         buffer[i] = DS1302_ReadByteLSB();
     }
@@ -264,6 +307,39 @@ DS1302_Status_t DS1302_SetDateTime(const DS1302_DateTime_t *time)
     DS1302_WriteRegister(DS1302_CMD_MONTH, DS1302_ToBCD(time->month));
     DS1302_WriteRegister(DS1302_CMD_DAY, DS1302_ToBCD(time->weekday));
     DS1302_WriteRegister(DS1302_CMD_YEAR, DS1302_ToBCD((uint8_t)(time->year - 2000U)));
+    DS1302_WriteRegister(DS1302_CMD_CONTROL, DS1302_CONTROL_WP);
+
+    return DS1302_OK;
+}
+
+DS1302_Status_t DS1302_SetDateTimeOnce(const DS1302_DateTime_t *time)
+{
+    DS1302_DateTime_t current_time;
+    DS1302_Status_t status;
+    uint8_t init_mark;
+
+    if(time == NULL) {
+        return DS1302_ERR_NULL;
+    }
+
+    if(!DS1302_IsValidDateTime(time)) {
+        return DS1302_ERR_INVALID_TIME;
+    }
+
+    init_mark = DS1302_ReadRamByte(DS1302_RAM_INIT_ADDR);
+    status = DS1302_GetDateTime(&current_time);
+
+    if(init_mark == DS1302_RAM_INIT_MARK && status == DS1302_OK) {
+        return DS1302_OK;
+    }
+
+    status = DS1302_SetDateTime(time);
+    if(status != DS1302_OK) {
+        return status;
+    }
+
+    DS1302_WriteRegister(DS1302_CMD_CONTROL, 0x00);
+    DS1302_WriteRamByte(DS1302_RAM_INIT_ADDR, DS1302_RAM_INIT_MARK);
     DS1302_WriteRegister(DS1302_CMD_CONTROL, DS1302_CONTROL_WP);
 
     return DS1302_OK;

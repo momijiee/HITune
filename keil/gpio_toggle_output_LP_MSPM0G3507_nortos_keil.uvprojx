@@ -465,14 +465,14 @@
               <FilePath>..\BSP\oledfont.h</FilePath>
             </File>
             <File>
-              <FileName>ds1302.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>..\BSP\ds1302.h</FilePath>
+              <FileName>bsp_ds1302.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp_ds1302.c</FilePath>
             </File>
             <File>
-              <FileName>ds1302.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>..\BSP\ds1302.c</FilePath>
+              <FileName>bsp_ds1302.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\bsp_ds1302.h</FilePath>
             </File>
           </Files>
         </Group>

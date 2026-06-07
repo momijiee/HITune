@@ -179,15 +179,15 @@ extern "C" {
 /* Port definition for Pin Group DS1302 */
 #define DS1302_PORT                                                      (GPIOA)
 
-/* Defines for CLK: GPIOA.23 with pinCMx 53 on package pin 24 */
-#define DS1302_CLK_PIN                                          (DL_GPIO_PIN_23)
-#define DS1302_CLK_IOMUX                                         (IOMUX_PINCM53)
-/* Defines for DAT: GPIOA.24 with pinCMx 54 on package pin 25 */
-#define DS1302_DAT_PIN                                          (DL_GPIO_PIN_24)
-#define DS1302_DAT_IOMUX                                         (IOMUX_PINCM54)
-/* Defines for RST: GPIOA.25 with pinCMx 55 on package pin 26 */
-#define DS1302_RST_PIN                                          (DL_GPIO_PIN_25)
-#define DS1302_RST_IOMUX                                         (IOMUX_PINCM55)
+/* Defines for SCLK: GPIOA.23 with pinCMx 53 on package pin 24 */
+#define DS1302_SCLK_PIN                                         (DL_GPIO_PIN_23)
+#define DS1302_SCLK_IOMUX                                        (IOMUX_PINCM53)
+/* Defines for IO: GPIOA.24 with pinCMx 54 on package pin 25 */
+#define DS1302_IO_PIN                                           (DL_GPIO_PIN_24)
+#define DS1302_IO_IOMUX                                          (IOMUX_PINCM54)
+/* Defines for CE: GPIOA.25 with pinCMx 55 on package pin 26 */
+#define DS1302_CE_PIN                                           (DL_GPIO_PIN_25)
+#define DS1302_CE_IOMUX                                          (IOMUX_PINCM55)
 
 
 

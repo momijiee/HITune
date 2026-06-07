@@ -1,4 +1,4 @@
-./objects/gpio_toggle_output.o: ..\gpio_toggle_output.c \
+./objects/bsp_ds1302.o: ..\BSP\bsp_ds1302.c ..\BSP\bsp_ds1302.h \
   ..\ti_msp_dl_config.h ..\..\..\..\..\..\source\ti\devices\msp\msp.h \
   ..\..\..\..\..\..\source\ti\devices\DeviceFamily.h \
   ..\..\..\..\..\..\source\ti\devices\msp\m0p\mspm0g350x.h \
@@ -90,5 +90,4 @@
   ..\..\..\..\..\..\source\ti\driverlib\dl_vref.h \
   ..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h \
   ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h \
-  ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h ..\board.h \
-  D:\Software\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h
+  ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h ..\board.h
