@@ -12,7 +12,7 @@ import torch
 import torchaudio
 
 
-DEFAULT_MODEL_PATH = Path("/data2/guquansheng/MOSS-TTS-v1.5")
+DEFAULT_MODEL_PATH = Path("/data2/guquansheng/models/MOSS-TTS-v1.5")
 DEFAULT_CODEC_PATH = "/home/guquansheng/.cache/modelscope/hub/models/openmoss/MOSS-Audio-Tokenizer"
 
 
