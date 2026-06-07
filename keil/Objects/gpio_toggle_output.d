@@ -1,4 +1,4 @@
-./objects/gpio_toggle_output.o: ..\gpio_toggle_output.c \
+./objects/gpio_toggle_output.o: ..\gpio_toggle_output.c ..\board.h \
   ..\ti_msp_dl_config.h ..\..\..\..\..\..\source\ti\devices\msp\msp.h \
   ..\..\..\..\..\..\source\ti\devices\DeviceFamily.h \
   ..\..\..\..\..\..\source\ti\devices\msp\m0p\mspm0g350x.h \
@@ -90,6 +90,6 @@
   ..\..\..\..\..\..\source\ti\driverlib\dl_vref.h \
   ..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h \
   ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h \
-  ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h \
-  ..\BSP\bsp_voice.h ..\BSP\bsp_player.h ..\BSP\oled.h \
-  D:\Software\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdlib.h
+  ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h ..\BSP\oled.h \
+  D:\Software\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdlib.h \
+  ..\BSP\bsp_voice.h ..\BSP\bsp_player.h

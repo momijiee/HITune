@@ -3,8 +3,6 @@
 #include "oledfont.h"  	 
 //#include "delay.h"
 
-#define delay_ms(X)        delay_cycles((CPUCLK_FREQ/1000)*(X))
-
 u8 OLED_GRAM[144][8];
 
 //·´ÏÔº¯Êý

@@ -178,6 +178,8 @@ extern "C" {
 #define OLED_CS_OLED_IOMUX                                        (IOMUX_PINCM7)
 
 
+
+
 /* clang-format on */
 
 void SYSCFG_DL_init(void);
@@ -189,6 +191,7 @@ void SYSCFG_DL_UART_init(void);
 void SYSCFG_DL_UART_PLR_init(void);
 void SYSCFG_DL_ADC12_0_init(void);
 
+void SYSCFG_DL_SYSTICK_init(void);
 
 bool SYSCFG_DL_saveConfiguration(void);
 bool SYSCFG_DL_restoreConfiguration(void);

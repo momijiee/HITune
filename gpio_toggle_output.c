@@ -1,10 +1,10 @@
+#include "board.h"
+#include "oled.h"
 #include "ti_msp_dl_config.h"
 #include "bsp_voice.h"
 #include "bsp_player.h"
 #include <stdbool.h>
-#include "oled.h"
 
-#define delay_ms(X)        delay_cycles((CPUCLK_FREQ/1000)*(X))
 
 // ---- 状态枚举定义 (共54个状态，此处精简列出核心及代表性状态) ----
 typedef enum {
@@ -91,6 +91,7 @@ void uart_debug_print_hex8(uint8_t val);
 
 int main(void)
 {
+		board_init();
     OLED_Init();    
     OLED_Clear();
     SYSCFG_DL_init();

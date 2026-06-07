@@ -9,17 +9,18 @@
 /**
  * Import the modules used in this configuration.
  */
-const ADC12  = scripting.addModule("/ti/driverlib/ADC12", {}, false);
-const ADC121 = ADC12.addInstance();
-const GPIO   = scripting.addModule("/ti/driverlib/GPIO", {}, false);
-const GPIO1  = GPIO.addInstance();
-const GPIO2  = GPIO.addInstance();
-const PWM    = scripting.addModule("/ti/driverlib/PWM", {}, false);
-const PWM1   = PWM.addInstance();
-const SYSCTL = scripting.addModule("/ti/driverlib/SYSCTL");
-const UART   = scripting.addModule("/ti/driverlib/UART", {}, false);
-const UART1  = UART.addInstance();
-const UART2  = UART.addInstance();
+const ADC12   = scripting.addModule("/ti/driverlib/ADC12", {}, false);
+const ADC121  = ADC12.addInstance();
+const GPIO    = scripting.addModule("/ti/driverlib/GPIO", {}, false);
+const GPIO1   = GPIO.addInstance();
+const GPIO2   = GPIO.addInstance();
+const PWM     = scripting.addModule("/ti/driverlib/PWM", {}, false);
+const PWM1    = PWM.addInstance();
+const SYSCTL  = scripting.addModule("/ti/driverlib/SYSCTL");
+const SYSTICK = scripting.addModule("/ti/driverlib/SYSTICK");
+const UART    = scripting.addModule("/ti/driverlib/UART", {}, false);
+const UART1   = UART.addInstance();
+const UART2   = UART.addInstance();
 
 /**
  * Write custom configuration values to the imported modules.
@@ -48,6 +49,7 @@ GPIO1.associatedPins[1].assignedPin  = "1";
 GPIO1.associatedPins[1].pin.$assign  = "PA1";
 
 GPIO2.$name                          = "OLED";
+GPIO2.port                           = "PORTA";
 GPIO2.associatedPins.create(5);
 GPIO2.associatedPins[0].$name        = "SCL_OLED";
 GPIO2.associatedPins[0].initialValue = "SET";
@@ -60,6 +62,7 @@ GPIO2.associatedPins[1].pin.$assign  = "PA14";
 GPIO2.associatedPins[2].$name        = "RES_OLED";
 GPIO2.associatedPins[2].initialValue = "SET";
 GPIO2.associatedPins[2].assignedPin  = "21";
+GPIO2.associatedPins[2].pin.$assign  = "PA21";
 GPIO2.associatedPins[3].$name        = "DC_OLED";
 GPIO2.associatedPins[3].initialValue = "SET";
 GPIO2.associatedPins[3].assignedPin  = "22";
@@ -67,6 +70,7 @@ GPIO2.associatedPins[3].pin.$assign  = "PA22";
 GPIO2.associatedPins[4].$name        = "CS_OLED";
 GPIO2.associatedPins[4].initialValue = "SET";
 GPIO2.associatedPins[4].assignedPin  = "2";
+GPIO2.associatedPins[4].pin.$assign  = "PA2";
 
 PWM1.$name                              = "PWM";
 PWM1.peripheral.$assign                 = "TIMA1";
@@ -86,6 +90,10 @@ PWM1.ccp1PinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric5";
 
 SYSCTL.forceDefaultClkConfig = true;
 SYSCTL.clockTreeEn           = true;
+
+SYSTICK.periodEnable  = true;
+SYSTICK.period        = 32;
+SYSTICK.systickEnable = true;
 
 UART1.$name                            = "UART";
 UART1.uartClkSrc                       = "MFCLK";
@@ -123,11 +131,9 @@ UART2.rxPinConfig.$name                = "ti_driverlib_gpio_GPIOPinGeneric3";
  * version of the tool will not impact the pinmux you originally saw.  These lines can be completely deleted in order to
  * re-solve from scratch.
  */
-ADC121.peripheral.$suggestSolution           = "ADC0";
-ADC121.peripheral.adcPin0.$suggestSolution   = "PA27";
-Board.peripheral.$suggestSolution            = "DEBUGSS";
-Board.peripheral.swclkPin.$suggestSolution   = "PA20";
-Board.peripheral.swdioPin.$suggestSolution   = "PA19";
-GPIO2.associatedPins[2].pin.$suggestSolution = "PA21";
-GPIO2.associatedPins[4].pin.$suggestSolution = "PA2";
-PWM1.peripheral.ccp1Pin.$suggestSolution     = "PA16";
+ADC121.peripheral.$suggestSolution         = "ADC0";
+ADC121.peripheral.adcPin0.$suggestSolution = "PA27";
+Board.peripheral.$suggestSolution          = "DEBUGSS";
+Board.peripheral.swclkPin.$suggestSolution = "PA20";
+Board.peripheral.swdioPin.$suggestSolution = "PA19";
+PWM1.peripheral.ccp1Pin.$suggestSolution   = "PA16";

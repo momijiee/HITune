@@ -2,6 +2,7 @@
 ".\objects\gpio_toggle_output.o"
 ".\objects\startup_mspm0g350x_uvision.o"
 ".\objects\ti_msp_dl_config.o"
+".\objects\board.o"
 ".\objects\bsp_voice.o"
 ".\objects\bsp_player.o"
 ".\objects\oled.o"

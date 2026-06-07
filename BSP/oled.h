@@ -1,8 +1,8 @@
 #ifndef __OLED_H
 #define __OLED_H 
 
+#include "board.h"
 #include "stdlib.h"	
-#include "ti_msp_dl_config.h"
 
 #ifndef u8
 #define u8 uint8_t

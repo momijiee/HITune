@@ -56,6 +56,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     SYSCFG_DL_UART_init();
     SYSCFG_DL_UART_PLR_init();
     SYSCFG_DL_ADC12_0_init();
+    SYSCFG_DL_SYSTICK_init();
     /* Ensure backup structures have no valid state */
 	gPWMBackup.backupRdy 	= false;
 
@@ -93,12 +94,14 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_UART_Main_reset(UART_PLR_INST);
     DL_ADC12_reset(ADC12_0_INST);
 
+
     DL_GPIO_enablePower(GPIOA);
     DL_GPIO_enablePower(GPIOB);
     DL_TimerA_enablePower(PWM_INST);
     DL_UART_Main_enablePower(UART_INST);
     DL_UART_Main_enablePower(UART_PLR_INST);
     DL_ADC12_enablePower(ADC12_0_INST);
+
     delay_cycles(POWER_STARTUP_DELAY);
 }
 
@@ -301,5 +304,13 @@ SYSCONFIG_WEAK void SYSCFG_DL_ADC12_0_init(void)
         DL_ADC12_INPUT_CHAN_0, DL_ADC12_REFERENCE_VOLTAGE_VDDA, DL_ADC12_SAMPLE_TIMER_SOURCE_SCOMP0, DL_ADC12_AVERAGING_MODE_DISABLED,
         DL_ADC12_BURN_OUT_SOURCE_DISABLED, DL_ADC12_TRIGGER_MODE_AUTO_NEXT, DL_ADC12_WINDOWS_COMP_MODE_DISABLED);
     DL_ADC12_enableConversions(ADC12_0_INST);
+}
+
+SYSCONFIG_WEAK void SYSCFG_DL_SYSTICK_init(void)
+{
+    /* Initialize the period to 1.00 μs */
+    DL_SYSTICK_init(32);
+    /* Enable the SysTick and start counting */
+    DL_SYSTICK_enable();
 }
 
