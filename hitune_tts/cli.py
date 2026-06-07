@@ -100,10 +100,10 @@ def _clean_markdown_cell(value: str) -> str:
     return value.strip()
 
 
-def _estimate_tokens(text: str) -> int:
+def _estimate_max_new_tokens(text: str) -> int:
     content = re.sub(r"[\s，。！？；：、“”‘’……~,.!?;:'\"()（）\\-]+", "", text)
     punctuation_count = len(re.findall(r"[，。！？；：,.!?;:、……~]", text))
-    return max(36, min(420, round(len(content) * 3.2 + punctuation_count * 3 + 20)))
+    return max(512, min(1024, round(len(content) * 8 + punctuation_count * 12 + 128)))
 
 
 def _load_assets_markdown(path: Path) -> tuple[str | None, list[dict]]:
@@ -126,14 +126,12 @@ def _load_assets_markdown(path: Path) -> tuple[str | None, list[dict]]:
         if not filename.endswith(".mp3") or not text:
             continue
 
-        tokens = _estimate_tokens(text)
         assets.append(
             {
                 "filename": filename,
                 "state": state,
                 "text": text,
-                "tokens": tokens,
-                "max_new_tokens": max(tokens + 40, 80),
+                "max_new_tokens": _estimate_max_new_tokens(text),
             }
         )
 
@@ -207,7 +205,7 @@ def _iter_jobs(
         for item in assets:
             instruction = args.instruction or markdown_instruction
             language = args.language or "Chinese"
-            tokens = args.tokens if args.tokens is not None else item["tokens"]
+            tokens = args.tokens
             max_new_tokens = max(args.max_new_tokens, int(item["max_new_tokens"]))
             yield (
                 str(output_dir / item["filename"]),
