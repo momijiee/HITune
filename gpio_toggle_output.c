@@ -1,6 +1,7 @@
 #include "ti_msp_dl_config.h"
 #include "bsp_voice.h"
 #include "bsp_player.h"
+#include "bsp_ds1302.h"
 
 // 毫秒延时宏定义
 #define delay_ms(X)        delay_cycles((CPUCLK_FREQ/1000)*(X))
@@ -8,6 +9,9 @@
 // 调试串口辅助函数声明（用于在电脑串口助手看日志）
 void uart_debug_send_string(char* str);
 void uart_debug_print_hex8(uint8_t val);
+void uart_debug_print_dec2(uint8_t val);
+void uart_debug_print_dec4(uint16_t val);
+void uart_debug_print_datetime(const DS1302_DateTime_t *time);
 
 int main(void)
 {
@@ -23,8 +27,19 @@ int main(void)
     Player_SetVolume(20);
     uart_debug_send_string("-> Player Init: Volume set to 20\r\n");
 
+    // 4. 初始化 DS1302 三线 RTC。首次使用前请调用 DS1302_SetDateTime() 写入一次当前时间。
+    DS1302_Init();
+    if(DS1302_IsClockHalted()) {
+        DS1302_StartClock();
+        uart_debug_send_string("-> DS1302 clock was halted, oscillator started\r\n");
+    } else {
+        uart_debug_send_string("-> DS1302 RTC init OK\r\n");
+    }
+
     uint8_t current_id = 0x00;
     uint8_t last_id = 0x00;
+    uint8_t rtc_poll_tick = 0;
+    DS1302_DateTime_t now;
 
     while(1)
     {
@@ -34,6 +49,22 @@ int main(void)
 
         // 从 I2C 语音模块读取当前触发的 ID
         current_id = Voice_Module_ReadID();
+
+        rtc_poll_tick++;
+        if(rtc_poll_tick >= 10)
+        {
+            rtc_poll_tick = 0;
+            if(DS1302_GetDateTime(&now) == DS1302_OK)
+            {
+                uart_debug_send_string("RTC Now: ");
+                uart_debug_print_datetime(&now);
+                uart_debug_send_string("\r\n");
+            }
+            else
+            {
+                uart_debug_send_string("RTC read failed, please set DS1302 time first\r\n");
+            }
+        }
 
         // 状态机：只有当识别到新有效指令，且与上一次不同时才触发（防止持续按住或不松口时重复发送串口指令）
         if(current_id != 0x00 && current_id != last_id)
@@ -111,4 +142,59 @@ void uart_debug_print_hex8(uint8_t val)
     // 发送低 4 位
     while(DL_UART_isBusy(UART_INST) == true);
     DL_UART_Main_transmitData(UART_INST, low < 10 ? low + '0' : low - 10 + 'A');
+}
+
+/******************************************************************
+ * 函 数 名 称：uart_debug_print_dec2
+ * 函 数 说 明：打印两位十进制数
+ ******************************************************************/
+void uart_debug_print_dec2(uint8_t val)
+{
+    if(val > 99) val = 99;
+
+    while(DL_UART_isBusy(UART_INST) == true);
+    DL_UART_Main_transmitData(UART_INST, (uint8_t)('0' + (val / 10)));
+
+    while(DL_UART_isBusy(UART_INST) == true);
+    DL_UART_Main_transmitData(UART_INST, (uint8_t)('0' + (val % 10)));
+}
+
+/******************************************************************
+ * 函 数 名 称：uart_debug_print_dec4
+ * 函 数 说 明：打印四位十进制数
+ ******************************************************************/
+void uart_debug_print_dec4(uint16_t val)
+{
+    if(val > 9999) val = 9999;
+
+    while(DL_UART_isBusy(UART_INST) == true);
+    DL_UART_Main_transmitData(UART_INST, (uint8_t)('0' + ((val / 1000) % 10)));
+
+    while(DL_UART_isBusy(UART_INST) == true);
+    DL_UART_Main_transmitData(UART_INST, (uint8_t)('0' + ((val / 100) % 10)));
+
+    while(DL_UART_isBusy(UART_INST) == true);
+    DL_UART_Main_transmitData(UART_INST, (uint8_t)('0' + ((val / 10) % 10)));
+
+    while(DL_UART_isBusy(UART_INST) == true);
+    DL_UART_Main_transmitData(UART_INST, (uint8_t)('0' + (val % 10)));
+}
+
+/******************************************************************
+ * 函 数 名 称：uart_debug_print_datetime
+ * 函 数 说 明：打印 DS1302_DateTime_t，格式 yyyy-mm-dd hh:mm:ss
+ ******************************************************************/
+void uart_debug_print_datetime(const DS1302_DateTime_t *time)
+{
+    uart_debug_print_dec4(time->year);
+    uart_debug_send_string("-");
+    uart_debug_print_dec2(time->month);
+    uart_debug_send_string("-");
+    uart_debug_print_dec2(time->day);
+    uart_debug_send_string(" ");
+    uart_debug_print_dec2(time->hour);
+    uart_debug_send_string(":");
+    uart_debug_print_dec2(time->minute);
+    uart_debug_send_string(":");
+    uart_debug_print_dec2(time->second);
 }
