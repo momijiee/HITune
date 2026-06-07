@@ -2,6 +2,7 @@
 #include "bsp_voice.h"
 #include "bsp_player.h"
 #include <stdbool.h>
+#include "oled.h"
 
 #define delay_ms(X)        delay_cycles((CPUCLK_FREQ/1000)*(X))
 
@@ -90,6 +91,8 @@ void uart_debug_print_hex8(uint8_t val);
 
 int main(void)
 {
+    OLED_Init();    
+    OLED_Clear();
     SYSCFG_DL_init();
     Player_SetVolume(20);
     
@@ -100,7 +103,12 @@ int main(void)
 
     while(1)
     {
-        DL_GPIO_togglePins(LED1_PORT, LED1_PIN_22_PIN);
+				OLED_ShowString(0,0,(uint8_t *)"ABC",8,1);//6*8 “ABC”
+        OLED_ShowString(0,8,(uint8_t *)"ABC",12,1);//6*12 “ABC”
+        OLED_ShowString(0,20,(uint8_t *)"ABC",16,1);//8*16 “ABC”
+        OLED_ShowString(0,36,(uint8_t *)"ABC",24,1);//12*24 “ABC”
+        OLED_Refresh();
+			
         delay_ms(100); 
 
         current_id = Voice_Module_ReadID();

@@ -1,25 +1,37 @@
 #ifndef __OLED_H
 #define __OLED_H 
 
-#include "sys.h"
 #include "stdlib.h"	
+#include "ti_msp_dl_config.h"
+
+#ifndef u8
+#define u8 uint8_t
+#endif
+
+#ifndef u16
+#define u16 uint16_t
+#endif
+
+#ifndef u32
+#define u32 uint32_t
+#endif
 
 //-----------------OLED¶Ë¿Ú¶¨Òå---------------- 
 
-#define OLED_SCL_Clr() GPIO_ResetBits(GPIOA,GPIO_Pin_0)//SCL
-#define OLED_SCL_Set() GPIO_SetBits(GPIOA,GPIO_Pin_0)
+#define OLED_SCL_Clr() DL_GPIO_clearPins(GPIOA, OLED_SCL_OLED_PIN)
+#define OLED_SCL_Set() DL_GPIO_setPins(GPIOA, OLED_SCL_OLED_PIN)
 
-#define OLED_SDA_Clr() GPIO_ResetBits(GPIOA,GPIO_Pin_1)//SDA
-#define OLED_SDA_Set() GPIO_SetBits(GPIOA,GPIO_Pin_1)
+#define OLED_SDA_Clr() DL_GPIO_clearPins(GPIOA, OLED_SDA_OLED_PIN)
+#define OLED_SDA_Set() DL_GPIO_setPins(GPIOA, OLED_SDA_OLED_PIN)
 
-#define OLED_RES_Clr() GPIO_ResetBits(GPIOA,GPIO_Pin_2)//RES
-#define OLED_RES_Set() GPIO_SetBits(GPIOA,GPIO_Pin_2)
+#define OLED_RES_Clr() DL_GPIO_clearPins(GPIOA, OLED_RES_OLED_PIN)
+#define OLED_RES_Set() DL_GPIO_setPins(GPIOA, OLED_RES_OLED_PIN)
 
-#define OLED_DC_Clr()  GPIO_ResetBits(GPIOA,GPIO_Pin_3)//DC
-#define OLED_DC_Set()  GPIO_SetBits(GPIOA,GPIO_Pin_3)
- 		     
-#define OLED_CS_Clr()  GPIO_ResetBits(GPIOA,GPIO_Pin_4)//CS
-#define OLED_CS_Set()  GPIO_SetBits(GPIOA,GPIO_Pin_4)
+#define OLED_DC_Clr()  DL_GPIO_clearPins(GPIOB, OLED_DC_OLED_PIN)
+#define OLED_DC_Set()  DL_GPIO_setPins(GPIOB, OLED_DC_OLED_PIN)
+
+#define OLED_CS_Clr()  DL_GPIO_clearPins(GPIOA, OLED_CS_OLED_PIN)
+#define OLED_CS_Set()  DL_GPIO_setPins(GPIOA, OLED_CS_OLED_PIN)
 
 
 #define OLED_CMD  0	//Ð´ÃüÁî

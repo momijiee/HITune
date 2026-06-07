@@ -434,6 +434,26 @@
               <FileType>5</FileType>
               <FilePath>..\BSP\bsp_player.h</FilePath>
             </File>
+            <File>
+              <FileName>bmp.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\bmp.h</FilePath>
+            </File>
+            <File>
+              <FileName>oled.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\oled.c</FilePath>
+            </File>
+            <File>
+              <FileName>oled.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\oled.h</FilePath>
+            </File>
+            <File>
+              <FileName>oledfont.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\oledfont.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

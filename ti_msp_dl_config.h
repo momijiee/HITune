@@ -78,6 +78,26 @@ extern "C" {
 
 
 
+/* Defines for PWM */
+#define PWM_INST                                                           TIMA1
+#define PWM_INST_IRQHandler                                     TIMA1_IRQHandler
+#define PWM_INST_INT_IRQN                                       (TIMA1_INT_IRQn)
+#define PWM_INST_CLK_FREQ                                               32000000
+/* GPIO defines for channel 0 */
+#define GPIO_PWM_C0_PORT                                                   GPIOA
+#define GPIO_PWM_C0_PIN                                           DL_GPIO_PIN_15
+#define GPIO_PWM_C0_IOMUX                                        (IOMUX_PINCM37)
+#define GPIO_PWM_C0_IOMUX_FUNC                       IOMUX_PINCM37_PF_TIMA1_CCP0
+#define GPIO_PWM_C0_IDX                                      DL_TIMER_CC_0_INDEX
+/* GPIO defines for channel 1 */
+#define GPIO_PWM_C1_PORT                                                   GPIOA
+#define GPIO_PWM_C1_PIN                                           DL_GPIO_PIN_16
+#define GPIO_PWM_C1_IOMUX                                        (IOMUX_PINCM38)
+#define GPIO_PWM_C1_IOMUX_FUNC                       IOMUX_PINCM38_PF_TIMA1_CCP1
+#define GPIO_PWM_C1_IDX                                      DL_TIMER_CC_1_INDEX
+
+
+
 /* Defines for UART */
 #define UART_INST                                                          UART0
 #define UART_INST_FREQUENCY                                              4000000
@@ -115,6 +135,20 @@ extern "C" {
 
 
 
+/* Defines for ADC12_0 */
+#define ADC12_0_INST                                                        ADC0
+#define ADC12_0_INST_IRQHandler                                  ADC0_IRQHandler
+#define ADC12_0_INST_INT_IRQN                                    (ADC0_INT_IRQn)
+#define ADC12_0_ADCMEM_0                                      DL_ADC12_MEM_IDX_0
+#define ADC12_0_ADCMEM_0_REF                     DL_ADC12_REFERENCE_VOLTAGE_VDDA
+#define ADC12_0_ADCMEM_0_REF_VOLTAGE_V                                       3.3
+#define GPIO_ADC12_0_C0_PORT                                               GPIOA
+#define GPIO_ADC12_0_C0_PIN                                       DL_GPIO_PIN_27
+#define GPIO_ADC12_0_IOMUX_C0                                    (IOMUX_PINCM60)
+#define GPIO_ADC12_0_IOMUX_C0_FUNC                (IOMUX_PINCM60_PF_UNCONNECTED)
+
+
+
 /* Port definition for Pin Group LED1 */
 #define LED1_PORT                                                        (GPIOA)
 
@@ -130,6 +164,26 @@ extern "C" {
 /* Defines for SDA: GPIOA.1 with pinCMx 2 on package pin 34 */
 #define I2C_SDA_PIN                                              (DL_GPIO_PIN_1)
 #define I2C_SDA_IOMUX                                             (IOMUX_PINCM2)
+/* Defines for SCL_OLED: GPIOA.12 with pinCMx 34 on package pin 5 */
+#define OLED_SCL_OLED_PORT                                               (GPIOA)
+#define OLED_SCL_OLED_PIN                                       (DL_GPIO_PIN_12)
+#define OLED_SCL_OLED_IOMUX                                      (IOMUX_PINCM34)
+/* Defines for SDA_OLED: GPIOA.14 with pinCMx 36 on package pin 7 */
+#define OLED_SDA_OLED_PORT                                               (GPIOA)
+#define OLED_SDA_OLED_PIN                                       (DL_GPIO_PIN_14)
+#define OLED_SDA_OLED_IOMUX                                      (IOMUX_PINCM36)
+/* Defines for RES_OLED: GPIOA.21 with pinCMx 46 on package pin 17 */
+#define OLED_RES_OLED_PORT                                               (GPIOA)
+#define OLED_RES_OLED_PIN                                       (DL_GPIO_PIN_21)
+#define OLED_RES_OLED_IOMUX                                      (IOMUX_PINCM46)
+/* Defines for DC_OLED: GPIOB.22 with pinCMx 50 on package pin 21 */
+#define OLED_DC_OLED_PORT                                                (GPIOB)
+#define OLED_DC_OLED_PIN                                        (DL_GPIO_PIN_22)
+#define OLED_DC_OLED_IOMUX                                       (IOMUX_PINCM50)
+/* Defines for CS_OLED: GPIOA.2 with pinCMx 7 on package pin 42 */
+#define OLED_CS_OLED_PORT                                                (GPIOA)
+#define OLED_CS_OLED_PIN                                         (DL_GPIO_PIN_2)
+#define OLED_CS_OLED_IOMUX                                        (IOMUX_PINCM7)
 
 
 /* clang-format on */
@@ -138,8 +192,10 @@ void SYSCFG_DL_init(void);
 void SYSCFG_DL_initPower(void);
 void SYSCFG_DL_GPIO_init(void);
 void SYSCFG_DL_SYSCTL_init(void);
+void SYSCFG_DL_PWM_init(void);
 void SYSCFG_DL_UART_init(void);
 void SYSCFG_DL_UART_PLR_init(void);
+void SYSCFG_DL_ADC12_0_init(void);
 
 
 bool SYSCFG_DL_saveConfiguration(void);

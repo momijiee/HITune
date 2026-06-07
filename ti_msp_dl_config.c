@@ -40,6 +40,8 @@
 
 #include "ti_msp_dl_config.h"
 
+DL_TimerA_backupConfig gPWMBackup;
+
 /*
  *  ======== SYSCFG_DL_init ========
  *  Perform any initialization needed before using any board APIs
@@ -50,28 +52,63 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     SYSCFG_DL_GPIO_init();
     /* Module-Specific Initializations*/
     SYSCFG_DL_SYSCTL_init();
+    SYSCFG_DL_PWM_init();
     SYSCFG_DL_UART_init();
     SYSCFG_DL_UART_PLR_init();
+    SYSCFG_DL_ADC12_0_init();
+    /* Ensure backup structures have no valid state */
+	gPWMBackup.backupRdy 	= false;
+
+
+}
+/*
+ * User should take care to save and restore register configuration in application.
+ * See Retention Configuration section for more details.
+ */
+SYSCONFIG_WEAK bool SYSCFG_DL_saveConfiguration(void)
+{
+    bool retStatus = true;
+
+	retStatus &= DL_TimerA_saveConfiguration(PWM_INST, &gPWMBackup);
+
+    return retStatus;
 }
 
 
+SYSCONFIG_WEAK bool SYSCFG_DL_restoreConfiguration(void)
+{
+    bool retStatus = true;
+
+	retStatus &= DL_TimerA_restoreConfiguration(PWM_INST, &gPWMBackup, false);
+
+    return retStatus;
+}
 
 SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
 {
     DL_GPIO_reset(GPIOA);
     DL_GPIO_reset(GPIOB);
+    DL_TimerA_reset(PWM_INST);
     DL_UART_Main_reset(UART_INST);
     DL_UART_Main_reset(UART_PLR_INST);
+    DL_ADC12_reset(ADC12_0_INST);
 
     DL_GPIO_enablePower(GPIOA);
     DL_GPIO_enablePower(GPIOB);
+    DL_TimerA_enablePower(PWM_INST);
     DL_UART_Main_enablePower(UART_INST);
     DL_UART_Main_enablePower(UART_PLR_INST);
+    DL_ADC12_enablePower(ADC12_0_INST);
     delay_cycles(POWER_STARTUP_DELAY);
 }
 
 SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 {
+
+    DL_GPIO_initPeripheralOutputFunction(GPIO_PWM_C0_IOMUX,GPIO_PWM_C0_IOMUX_FUNC);
+    DL_GPIO_enableOutput(GPIO_PWM_C0_PORT, GPIO_PWM_C0_PIN);
+    DL_GPIO_initPeripheralOutputFunction(GPIO_PWM_C1_IOMUX,GPIO_PWM_C1_IOMUX_FUNC);
+    DL_GPIO_enableOutput(GPIO_PWM_C1_PORT, GPIO_PWM_C1_PIN);
 
     DL_GPIO_initPeripheralOutputFunction(
         GPIO_UART_IOMUX_TX, GPIO_UART_IOMUX_TX_FUNC);
@@ -88,12 +125,32 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalOutput(I2C_SDA_IOMUX);
 
+    DL_GPIO_initDigitalOutput(OLED_SCL_OLED_IOMUX);
+
+    DL_GPIO_initDigitalOutput(OLED_SDA_OLED_IOMUX);
+
+    DL_GPIO_initDigitalOutput(OLED_RES_OLED_IOMUX);
+
+    DL_GPIO_initDigitalOutput(OLED_DC_OLED_IOMUX);
+
+    DL_GPIO_initDigitalOutput(OLED_CS_OLED_IOMUX);
+
     DL_GPIO_clearPins(GPIOA, LED1_PIN_22_PIN);
     DL_GPIO_setPins(GPIOA, I2C_SCL_PIN |
-		I2C_SDA_PIN);
+		I2C_SDA_PIN |
+		OLED_SCL_OLED_PIN |
+		OLED_SDA_OLED_PIN |
+		OLED_RES_OLED_PIN |
+		OLED_CS_OLED_PIN);
     DL_GPIO_enableOutput(GPIOA, LED1_PIN_22_PIN |
 		I2C_SCL_PIN |
-		I2C_SDA_PIN);
+		I2C_SDA_PIN |
+		OLED_SCL_OLED_PIN |
+		OLED_SDA_OLED_PIN |
+		OLED_RES_OLED_PIN |
+		OLED_CS_OLED_PIN);
+    DL_GPIO_setPins(GPIOB, OLED_DC_OLED_PIN);
+    DL_GPIO_enableOutput(GPIOB, OLED_DC_OLED_PIN);
 
 }
 
@@ -111,6 +168,59 @@ SYSCONFIG_WEAK void SYSCFG_DL_SYSCTL_init(void)
 	DL_SYSCTL_disableHFXT();
 	DL_SYSCTL_disableSYSPLL();
     DL_SYSCTL_enableMFCLK();
+
+}
+
+
+/*
+ * Timer clock configuration to be sourced by  / 1 (32000000 Hz)
+ * timerClkFreq = (timerClkSrc / (timerClkDivRatio * (timerClkPrescale + 1)))
+ *   32000000 Hz = 32000000 Hz / (1 * (0 + 1))
+ */
+static const DL_TimerA_ClockConfig gPWMClockConfig = {
+    .clockSel = DL_TIMER_CLOCK_BUSCLK,
+    .divideRatio = DL_TIMER_CLOCK_DIVIDE_1,
+    .prescale = 0U
+};
+
+static const DL_TimerA_PWMConfig gPWMConfig = {
+    .pwmMode = DL_TIMER_PWM_MODE_EDGE_ALIGN,
+    .period = 1000,
+    .isTimerWithFourCC = false,
+    .startTimer = DL_TIMER_STOP,
+};
+
+SYSCONFIG_WEAK void SYSCFG_DL_PWM_init(void) {
+
+    DL_TimerA_setClockConfig(
+        PWM_INST, (DL_TimerA_ClockConfig *) &gPWMClockConfig);
+
+    DL_TimerA_initPWMMode(
+        PWM_INST, (DL_TimerA_PWMConfig *) &gPWMConfig);
+
+    // Set Counter control to the smallest CC index being used
+    DL_TimerA_setCounterControl(PWM_INST,DL_TIMER_CZC_CCCTL0_ZCOND,DL_TIMER_CAC_CCCTL0_ACOND,DL_TIMER_CLC_CCCTL0_LCOND);
+
+    DL_TimerA_setCaptureCompareOutCtl(PWM_INST, DL_TIMER_CC_OCTL_INIT_VAL_LOW,
+		DL_TIMER_CC_OCTL_INV_OUT_DISABLED, DL_TIMER_CC_OCTL_SRC_FUNCVAL,
+		DL_TIMERA_CAPTURE_COMPARE_0_INDEX);
+
+    DL_TimerA_setCaptCompUpdateMethod(PWM_INST, DL_TIMER_CC_UPDATE_METHOD_IMMEDIATE, DL_TIMERA_CAPTURE_COMPARE_0_INDEX);
+    DL_TimerA_setCaptureCompareValue(PWM_INST, 1000, DL_TIMER_CC_0_INDEX);
+
+    DL_TimerA_setCaptureCompareOutCtl(PWM_INST, DL_TIMER_CC_OCTL_INIT_VAL_LOW,
+		DL_TIMER_CC_OCTL_INV_OUT_DISABLED, DL_TIMER_CC_OCTL_SRC_FUNCVAL,
+		DL_TIMERA_CAPTURE_COMPARE_1_INDEX);
+
+    DL_TimerA_setCaptCompUpdateMethod(PWM_INST, DL_TIMER_CC_UPDATE_METHOD_IMMEDIATE, DL_TIMERA_CAPTURE_COMPARE_1_INDEX);
+    DL_TimerA_setCaptureCompareValue(PWM_INST, 1000, DL_TIMER_CC_1_INDEX);
+
+    DL_TimerA_enableClock(PWM_INST);
+
+
+    
+    DL_TimerA_setCCPDirection(PWM_INST , DL_TIMER_CC0_OUTPUT | DL_TIMER_CC1_OUTPUT );
+
 
 }
 
@@ -180,5 +290,20 @@ SYSCONFIG_WEAK void SYSCFG_DL_UART_PLR_init(void)
 
 
     DL_UART_Main_enable(UART_PLR_INST);
+}
+
+/* ADC12_0 Initialization */
+static const DL_ADC12_ClockConfig gADC12_0ClockConfig = {
+    .clockSel       = DL_ADC12_CLOCK_SYSOSC,
+    .divideRatio    = DL_ADC12_CLOCK_DIVIDE_1,
+    .freqRange      = DL_ADC12_CLOCK_FREQ_RANGE_24_TO_32,
+};
+SYSCONFIG_WEAK void SYSCFG_DL_ADC12_0_init(void)
+{
+    DL_ADC12_setClockConfig(ADC12_0_INST, (DL_ADC12_ClockConfig *) &gADC12_0ClockConfig);
+    DL_ADC12_configConversionMem(ADC12_0_INST, ADC12_0_ADCMEM_0,
+        DL_ADC12_INPUT_CHAN_0, DL_ADC12_REFERENCE_VOLTAGE_VDDA, DL_ADC12_SAMPLE_TIMER_SOURCE_SCOMP0, DL_ADC12_AVERAGING_MODE_DISABLED,
+        DL_ADC12_BURN_OUT_SOURCE_DISABLED, DL_ADC12_TRIGGER_MODE_AUTO_NEXT, DL_ADC12_WINDOWS_COMP_MODE_DISABLED);
+    DL_ADC12_enableConversions(ADC12_0_INST);
 }
 
