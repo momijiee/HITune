@@ -14,6 +14,7 @@ const ADC121  = ADC12.addInstance();
 const GPIO    = scripting.addModule("/ti/driverlib/GPIO", {}, false);
 const GPIO1   = GPIO.addInstance();
 const GPIO2   = GPIO.addInstance();
+const GPIO3   = GPIO.addInstance();
 const PWM     = scripting.addModule("/ti/driverlib/PWM", {}, false);
 const PWM1    = PWM.addInstance();
 const SYSCTL  = scripting.addModule("/ti/driverlib/SYSCTL");
@@ -71,6 +72,20 @@ GPIO2.associatedPins[4].$name        = "CS_OLED";
 GPIO2.associatedPins[4].initialValue = "SET";
 GPIO2.associatedPins[4].assignedPin  = "2";
 GPIO2.associatedPins[4].pin.$assign  = "PA2";
+
+GPIO3.$name                          = "TIMER";
+GPIO3.port                           = "PORTA";
+GPIO3.associatedPins.create(3);
+GPIO3.associatedPins[0].initialValue = "SET";
+GPIO3.associatedPins[0].$name        = "CLK";
+GPIO3.associatedPins[0].assignedPin  = "23";
+GPIO3.associatedPins[0].pin.$assign  = "PA23";
+GPIO3.associatedPins[1].$name        = "DAT";
+GPIO3.associatedPins[1].assignedPin  = "24";
+GPIO3.associatedPins[1].pin.$assign  = "PA24";
+GPIO3.associatedPins[2].$name        = "RST";
+GPIO3.associatedPins[2].assignedPin  = "25";
+GPIO3.associatedPins[2].pin.$assign  = "PA25";
 
 PWM1.$name                              = "PWM";
 PWM1.peripheral.$assign                 = "TIMA1";
