@@ -119,8 +119,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
     DL_GPIO_initPeripheralInputFunction(
         GPIO_UART_PLR_IOMUX_RX, GPIO_UART_PLR_IOMUX_RX_FUNC);
 
-    DL_GPIO_initDigitalOutput(LED1_PIN_22_IOMUX);
-
     DL_GPIO_initDigitalOutput(I2C_SCL_IOMUX);
 
     DL_GPIO_initDigitalOutput(I2C_SDA_IOMUX);
@@ -135,22 +133,20 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalOutput(OLED_CS_OLED_IOMUX);
 
-    DL_GPIO_clearPins(GPIOA, LED1_PIN_22_PIN);
     DL_GPIO_setPins(GPIOA, I2C_SCL_PIN |
 		I2C_SDA_PIN |
 		OLED_SCL_OLED_PIN |
 		OLED_SDA_OLED_PIN |
 		OLED_RES_OLED_PIN |
+		OLED_DC_OLED_PIN |
 		OLED_CS_OLED_PIN);
-    DL_GPIO_enableOutput(GPIOA, LED1_PIN_22_PIN |
-		I2C_SCL_PIN |
+    DL_GPIO_enableOutput(GPIOA, I2C_SCL_PIN |
 		I2C_SDA_PIN |
 		OLED_SCL_OLED_PIN |
 		OLED_SDA_OLED_PIN |
 		OLED_RES_OLED_PIN |
+		OLED_DC_OLED_PIN |
 		OLED_CS_OLED_PIN);
-    DL_GPIO_setPins(GPIOB, OLED_DC_OLED_PIN);
-    DL_GPIO_enableOutput(GPIOB, OLED_DC_OLED_PIN);
 
 }
 

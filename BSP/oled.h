@@ -16,26 +16,26 @@
 #define u32 uint32_t
 #endif
 
-//-----------------OLED¶Ë¿Ú¶¨Òå---------------- 
+//-----------------OLEDï¿½Ë¿Ú¶ï¿½ï¿½ï¿½---------------- 
 
-#define OLED_SCL_Clr() DL_GPIO_clearPins(GPIOA, OLED_SCL_OLED_PIN)
-#define OLED_SCL_Set() DL_GPIO_setPins(GPIOA, OLED_SCL_OLED_PIN)
+#define OLED_SCL_Clr() DL_GPIO_clearPins(OLED_PORT, OLED_SCL_OLED_PIN)
+#define OLED_SCL_Set() DL_GPIO_setPins(OLED_PORT, OLED_SCL_OLED_PIN)
 
-#define OLED_SDA_Clr() DL_GPIO_clearPins(GPIOA, OLED_SDA_OLED_PIN)
-#define OLED_SDA_Set() DL_GPIO_setPins(GPIOA, OLED_SDA_OLED_PIN)
+#define OLED_SDA_Clr() DL_GPIO_clearPins(OLED_PORT, OLED_SDA_OLED_PIN)
+#define OLED_SDA_Set() DL_GPIO_setPins(OLED_PORT, OLED_SDA_OLED_PIN)
 
-#define OLED_RES_Clr() DL_GPIO_clearPins(GPIOA, OLED_RES_OLED_PIN)
-#define OLED_RES_Set() DL_GPIO_setPins(GPIOA, OLED_RES_OLED_PIN)
+#define OLED_RES_Clr() DL_GPIO_clearPins(OLED_PORT, OLED_RES_OLED_PIN)
+#define OLED_RES_Set() DL_GPIO_setPins(OLED_PORT, OLED_RES_OLED_PIN)
 
-#define OLED_DC_Clr()  DL_GPIO_clearPins(GPIOB, OLED_DC_OLED_PIN)
-#define OLED_DC_Set()  DL_GPIO_setPins(GPIOB, OLED_DC_OLED_PIN)
+#define OLED_DC_Clr()  DL_GPIO_clearPins(OLED_PORT, OLED_DC_OLED_PIN)
+#define OLED_DC_Set()  DL_GPIO_setPins(OLED_PORT, OLED_DC_OLED_PIN)
 
-#define OLED_CS_Clr()  DL_GPIO_clearPins(GPIOA, OLED_CS_OLED_PIN)
-#define OLED_CS_Set()  DL_GPIO_setPins(GPIOA, OLED_CS_OLED_PIN)
+#define OLED_CS_Clr()  DL_GPIO_clearPins(OLED_PORT, OLED_CS_OLED_PIN)
+#define OLED_CS_Set()  DL_GPIO_setPins(OLED_PORT, OLED_CS_OLED_PIN)
 
 
-#define OLED_CMD  0	//Ð´ÃüÁî
-#define OLED_DATA 1	//Ð´Êý¾Ý
+#define OLED_CMD  0	//Ð´ï¿½ï¿½ï¿½ï¿½
+#define OLED_DATA 1	//Ð´ï¿½ï¿½ï¿½ï¿½
 
 void OLED_ClearPoint(u8 x,u8 y);
 void OLED_ColorTurn(u8 i);

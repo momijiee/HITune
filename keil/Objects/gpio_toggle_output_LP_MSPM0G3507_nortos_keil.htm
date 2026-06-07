@@ -3,9 +3,9 @@
 <title>Static Call Graph - [.\Objects\gpio_toggle_output_LP_MSPM0G3507_nortos_keil.axf]</title></head>
 <body><HR>
 <H1>Static Call Graph for image .\Objects\gpio_toggle_output_LP_MSPM0G3507_nortos_keil.axf</H1><HR>
-<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6180002: Last Updated: Sun Jun  7 14:39:39 2026
+<BR><P>#&#060CALLGRAPH&#062# ARM Linker, 6180002: Last Updated: Sun Jun  7 14:58:17 2026
 <BR><P>
-<H3>Maximum Stack Usage =        148 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
+<H3>Maximum Stack Usage =        144 bytes + Unknown(Cycles, Untraceable Function Pointers)</H3><H3>
 Call chain for Maximum Stack Depth:</H3>
 __rt_entry_main &rArr; main &rArr; OLED_Init &rArr; OLED_Refresh &rArr; OLED_WR_Byte
 <P>
@@ -164,7 +164,7 @@ Global Symbols
 <P><STRONG><a name="[74]"></a>__rt_entry_postsh_1</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$00000009))
 
 <P><STRONG><a name="[26]"></a>__rt_entry_main</STRONG> (Thumb, 0 bytes, Stack size unknown bytes, __rtentry2.o(.ARM.Collect$$rtentry$$0000000D))
-<BR><BR>[Stack]<UL><LI>Max Depth = 148 + Unknown Stack Size
+<BR><BR>[Stack]<UL><LI>Max Depth = 144 + Unknown Stack Size
 <LI>Call Chain = __rt_entry_main &rArr; main &rArr; OLED_Init &rArr; OLED_Refresh &rArr; OLED_WR_Byte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
@@ -438,15 +438,15 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[36]"></a>OLED_Clear</STRONG> (Thumb, 1328 bytes, Stack size 64 bytes, oled.o(.text.OLED_Clear))
-<BR><BR>[Stack]<UL><LI>Max Depth = 124<LI>Call Chain = OLED_Clear &rArr; OLED_Refresh &rArr; OLED_WR_Byte
+<BR><BR>[Stack]<UL><LI>Max Depth = 120<LI>Call Chain = OLED_Clear &rArr; OLED_Refresh &rArr; OLED_WR_Byte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Refresh
 </UL>
 <BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[38]"></a>OLED_Init</STRONG> (Thumb, 2964 bytes, Stack size 80 bytes, oled.o(.text.OLED_Init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 140<LI>Call Chain = OLED_Init &rArr; OLED_Refresh &rArr; OLED_WR_Byte
+<P><STRONG><a name="[38]"></a>OLED_Init</STRONG> (Thumb, 2960 bytes, Stack size 80 bytes, oled.o(.text.OLED_Init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 136<LI>Call Chain = OLED_Init &rArr; OLED_Refresh &rArr; OLED_WR_Byte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[33]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;DL_Common_delayCycles
 <LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Refresh
@@ -454,8 +454,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[37]"></a>OLED_Refresh</STRONG> (Thumb, 196 bytes, Stack size 40 bytes, oled.o(.text.OLED_Refresh))
-<BR><BR>[Stack]<UL><LI>Max Depth = 60<LI>Call Chain = OLED_Refresh &rArr; OLED_WR_Byte
+<P><STRONG><a name="[37]"></a>OLED_Refresh</STRONG> (Thumb, 192 bytes, Stack size 40 bytes, oled.o(.text.OLED_Refresh))
+<BR><BR>[Stack]<UL><LI>Max Depth = 56<LI>Call Chain = OLED_Refresh &rArr; OLED_WR_Byte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[39]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_WR_Byte
 </UL>
@@ -478,8 +478,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[27]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;main
 </UL>
 
-<P><STRONG><a name="[39]"></a>OLED_WR_Byte</STRONG> (Thumb, 148 bytes, Stack size 20 bytes, oled.o(.text.OLED_WR_Byte))
-<BR><BR>[Stack]<UL><LI>Max Depth = 20<LI>Call Chain = OLED_WR_Byte
+<P><STRONG><a name="[39]"></a>OLED_WR_Byte</STRONG> (Thumb, 148 bytes, Stack size 16 bytes, oled.o(.text.OLED_WR_Byte))
+<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = OLED_WR_Byte
 </UL>
 <BR>[Called By]<UL><LI><a href="#[37]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;OLED_Refresh
 </UL>
@@ -516,8 +516,8 @@ Global Symbols
 <BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SYSCFG_DL_init
 </UL>
 
-<P><STRONG><a name="[4e]"></a>SYSCFG_DL_GPIO_init</STRONG> (Thumb, 84 bytes, Stack size 16 bytes, ti_msp_dl_config.o(.text.SYSCFG_DL_GPIO_init))
-<BR><BR>[Stack]<UL><LI>Max Depth = 16<LI>Call Chain = SYSCFG_DL_GPIO_init
+<P><STRONG><a name="[4e]"></a>SYSCFG_DL_GPIO_init</STRONG> (Thumb, 64 bytes, Stack size 8 bytes, ti_msp_dl_config.o(.text.SYSCFG_DL_GPIO_init))
+<BR><BR>[Stack]<UL><LI>Max Depth = 8<LI>Call Chain = SYSCFG_DL_GPIO_init
 </UL>
 <BR>[Called By]<UL><LI><a href="#[4c]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;SYSCFG_DL_init
 </UL>
@@ -600,7 +600,7 @@ Global Symbols
 </UL>
 
 <P><STRONG><a name="[27]"></a>main</STRONG> (Thumb, 664 bytes, Stack size 8 bytes, gpio_toggle_output.o(.text.main))
-<BR><BR>[Stack]<UL><LI>Max Depth = 148<LI>Call Chain = main &rArr; OLED_Init &rArr; OLED_Refresh &rArr; OLED_WR_Byte
+<BR><BR>[Stack]<UL><LI>Max Depth = 144<LI>Call Chain = main &rArr; OLED_Init &rArr; OLED_Refresh &rArr; OLED_WR_Byte
 </UL>
 <BR>[Calls]<UL><LI><a href="#[52]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;MapVoiceIdToEvent
 <LI><a href="#[51]">&gt;&gt;</a>&nbsp;&nbsp;&nbsp;Voice_Module_ReadID

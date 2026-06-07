@@ -149,12 +149,6 @@ extern "C" {
 
 
 
-/* Port definition for Pin Group LED1 */
-#define LED1_PORT                                                        (GPIOA)
-
-/* Defines for PIN_22: GPIOA.22 with pinCMx 47 on package pin 18 */
-#define LED1_PIN_22_PIN                                         (DL_GPIO_PIN_22)
-#define LED1_PIN_22_IOMUX                                        (IOMUX_PINCM47)
 /* Port definition for Pin Group I2C */
 #define I2C_PORT                                                         (GPIOA)
 
@@ -164,24 +158,22 @@ extern "C" {
 /* Defines for SDA: GPIOA.1 with pinCMx 2 on package pin 34 */
 #define I2C_SDA_PIN                                              (DL_GPIO_PIN_1)
 #define I2C_SDA_IOMUX                                             (IOMUX_PINCM2)
+/* Port definition for Pin Group OLED */
+#define OLED_PORT                                                        (GPIOA)
+
 /* Defines for SCL_OLED: GPIOA.12 with pinCMx 34 on package pin 5 */
-#define OLED_SCL_OLED_PORT                                               (GPIOA)
 #define OLED_SCL_OLED_PIN                                       (DL_GPIO_PIN_12)
 #define OLED_SCL_OLED_IOMUX                                      (IOMUX_PINCM34)
 /* Defines for SDA_OLED: GPIOA.14 with pinCMx 36 on package pin 7 */
-#define OLED_SDA_OLED_PORT                                               (GPIOA)
 #define OLED_SDA_OLED_PIN                                       (DL_GPIO_PIN_14)
 #define OLED_SDA_OLED_IOMUX                                      (IOMUX_PINCM36)
 /* Defines for RES_OLED: GPIOA.21 with pinCMx 46 on package pin 17 */
-#define OLED_RES_OLED_PORT                                               (GPIOA)
 #define OLED_RES_OLED_PIN                                       (DL_GPIO_PIN_21)
 #define OLED_RES_OLED_IOMUX                                      (IOMUX_PINCM46)
-/* Defines for DC_OLED: GPIOB.22 with pinCMx 50 on package pin 21 */
-#define OLED_DC_OLED_PORT                                                (GPIOB)
+/* Defines for DC_OLED: GPIOA.22 with pinCMx 47 on package pin 18 */
 #define OLED_DC_OLED_PIN                                        (DL_GPIO_PIN_22)
-#define OLED_DC_OLED_IOMUX                                       (IOMUX_PINCM50)
+#define OLED_DC_OLED_IOMUX                                       (IOMUX_PINCM47)
 /* Defines for CS_OLED: GPIOA.2 with pinCMx 7 on package pin 42 */
-#define OLED_CS_OLED_PORT                                                (GPIOA)
 #define OLED_CS_OLED_PIN                                         (DL_GPIO_PIN_2)
 #define OLED_CS_OLED_IOMUX                                        (IOMUX_PINCM7)
 

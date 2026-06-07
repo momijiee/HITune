@@ -107,7 +107,7 @@ int main(void)
         OLED_ShowString(0,8,(uint8_t *)"ABC",12,1);//6*12 “ABC”
         OLED_ShowString(0,20,(uint8_t *)"ABC",16,1);//8*16 “ABC”
         OLED_ShowString(0,36,(uint8_t *)"ABC",24,1);//12*24 “ABC”
-        OLED_Refresh();
+        OLED_Refresh();	
 			
         delay_ms(100); 
 
