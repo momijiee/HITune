@@ -464,6 +464,16 @@
               <FileType>5</FileType>
               <FilePath>..\BSP\oledfont.h</FilePath>
             </File>
+            <File>
+              <FileName>ds1302.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\ds1302.h</FilePath>
+            </File>
+            <File>
+              <FileName>ds1302.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\ds1302.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>

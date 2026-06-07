@@ -149,12 +149,6 @@ extern "C" {
 
 
 
-/* Port definition for Pin Group TIMER */
-#define TIMER_PORT                                                       (GPIOA)
-
-/* Defines for CLK: GPIOA.23 with pinCMx 53 on package pin 24 */
-#define TIMER_CLK_PIN                                           (DL_GPIO_PIN_23)
-#define TIMER_CLK_IOMUX                                          (IOMUX_PINCM53)
 /* Port definition for Pin Group I2C */
 #define I2C_PORT                                                         (GPIOA)
 
@@ -182,12 +176,18 @@ extern "C" {
 /* Defines for CS_OLED: GPIOA.2 with pinCMx 7 on package pin 42 */
 #define OLED_CS_OLED_PIN                                         (DL_GPIO_PIN_2)
 #define OLED_CS_OLED_IOMUX                                        (IOMUX_PINCM7)
+/* Port definition for Pin Group DS1302 */
+#define DS1302_PORT                                                      (GPIOA)
+
+/* Defines for CLK: GPIOA.23 with pinCMx 53 on package pin 24 */
+#define DS1302_CLK_PIN                                          (DL_GPIO_PIN_23)
+#define DS1302_CLK_IOMUX                                         (IOMUX_PINCM53)
 /* Defines for DAT: GPIOA.24 with pinCMx 54 on package pin 25 */
-#define TIMER_DAT_PIN                                           (DL_GPIO_PIN_24)
-#define TIMER_DAT_IOMUX                                          (IOMUX_PINCM54)
+#define DS1302_DAT_PIN                                          (DL_GPIO_PIN_24)
+#define DS1302_DAT_IOMUX                                         (IOMUX_PINCM54)
 /* Defines for RST: GPIOA.25 with pinCMx 55 on package pin 26 */
-#define TIMER_RST_PIN                                           (DL_GPIO_PIN_25)
-#define TIMER_RST_IOMUX                                          (IOMUX_PINCM55)
+#define DS1302_RST_PIN                                          (DL_GPIO_PIN_25)
+#define DS1302_RST_IOMUX                                         (IOMUX_PINCM55)
 
 
 

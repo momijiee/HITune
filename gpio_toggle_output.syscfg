@@ -73,8 +73,8 @@ GPIO2.associatedPins[4].initialValue = "SET";
 GPIO2.associatedPins[4].assignedPin  = "2";
 GPIO2.associatedPins[4].pin.$assign  = "PA2";
 
-GPIO3.$name                          = "TIMER";
 GPIO3.port                           = "PORTA";
+GPIO3.$name                          = "DS1302";
 GPIO3.associatedPins.create(3);
 GPIO3.associatedPins[0].initialValue = "SET";
 GPIO3.associatedPins[0].$name        = "CLK";
