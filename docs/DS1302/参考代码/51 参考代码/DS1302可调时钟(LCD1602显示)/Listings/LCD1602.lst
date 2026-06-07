@@ -1,0 +1,202 @@
+C51 COMPILER V9.60.7.0   LCD1602                                                           07/06/2024 15:44:46 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE LCD1602
+OBJECT MODULE PLACED IN .\Objects\LCD1602.obj
+COMPILER INVOKED BY: E:\KEIL5\C51\BIN\C51.EXE LCD1602.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\LCD
+                    -1602.lst) OBJECT(.\Objects\LCD1602.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          #include <INTRINS.H>
+   3          #define  LCD_DATA   P0
+   4          sbit LCD1602_RS = P2^6;
+   5          sbit LCD1602_EN = P2^7;
+   6          sbit LCD1602_WR = P2^5;
+   7          
+   8          
+   9          void LCD1602_Delay1ms(void)     //@11.0592MHz
+  10          {
+  11   1              unsigned char data i, j;
+  12   1      
+  13   1              _nop_();
+  14   1              i = 2;
+  15   1              j = 199;
+  16   1              do
+  17   1              {
+  18   2                      while (--j);
+  19   2              } while (--i);
+  20   1      }
+  21          
+  22          
+  23          void LCD1602_WriteCmd(unsigned char Cmd)
+  24          {
+  25   1              LCD1602_RS = 0;
+  26   1              LCD1602_WR = 0;
+  27   1              LCD1602_EN = 0;
+  28   1              LCD_DATA = Cmd;
+  29   1              LCD1602_EN = 1;
+  30   1              LCD1602_Delay1ms();
+  31   1              LCD1602_EN = 0;
+  32   1              LCD1602_Delay1ms();
+  33   1      }
+  34          
+  35          void LCD1602_WriteData(unsigned char Data)
+  36          {
+  37   1              LCD1602_RS = 1;
+  38   1              LCD1602_WR = 0;
+  39   1              LCD1602_EN = 0;
+  40   1              LCD_DATA = Data;
+  41   1              LCD1602_EN = 1;
+  42   1              LCD1602_Delay1ms();
+  43   1              LCD1602_EN = 0; 
+  44   1              LCD1602_Delay1ms();
+  45   1      }
+  46          
+  47          void LCD1602_Init()
+  48          {
+  49   1              LCD1602_WriteCmd(0x38);
+  50   1              LCD1602_WriteCmd(0x0C);
+  51   1              LCD1602_WriteCmd(0x06);
+  52   1              LCD1602_WriteCmd(0x01);
+  53   1      }
+  54          
+C51 COMPILER V9.60.7.0   LCD1602                                                           07/06/2024 15:44:46 PAGE 2   
+
+  55          // 用于设置位置，在哪里显示。
+  56          void Set_Position(unsigned char Row, unsigned char Col)
+  57          {
+  58   1              if (Row == 1)
+  59   1              {
+  60   2                      LCD1602_WriteCmd(0x80 | (Col - 1));  // 映射的位置的数据最高位固定为1，所以真实的地
+             -址应该要再或上0x80
+  61   2              }
+  62   1              else
+  63   1              {
+  64   2                      LCD1602_WriteCmd((0x80 | (Col - 1)) + 0x40);
+  65   2              }
+  66   1      }
+  67          
+  68          // 在特定位置，显示 单个字节
+  69          void LCD_ShowChar(unsigned char Rows, unsigned char Cols, unsigned char Char)
+  70          {
+  71   1              Set_Position(Rows, Cols);
+  72   1              LCD1602_WriteData(Char);
+  73   1              
+  74   1      }
+  75          
+  76          // 在特定位置，显示 一个字符串
+  77          void LCD_ShowString(unsigned char Rows, unsigned char Cols, unsigned char String[])
+  78          {
+  79   1              unsigned char i;
+  80   1              Set_Position(Rows, Cols);
+  81   1              for (i = 0; String[i] != '\0'; i++)
+  82   1              {
+  83   2                      LCD1602_WriteData(String[i]);
+  84   2              }
+  85   1      }
+  86          
+  87          
+  88          
+  89          //123 / 100 % 10  = 1
+  90          //123 / 10  % 10  = 2
+  91          //123 / 1   % 10  = 3
+  92          // 用于计算某个数字的次方结果 
+  93          unsigned int SetNub(unsigned char Nub, Len)
+  94          {
+  95   1              unsigned int NubValue = 1;
+  96   1              unsigned char i;
+  97   1              for (i = 0; i < (Len - 1); i++)
+  98   1              {
+  99   2                      NubValue *= Nub;
+ 100   2              }
+ 101   1              return NubValue;
+ 102   1      }
+ 103          
+ 104          // 在特定位置，显示一个有符号数字(0 ~ 65535)
+ 105          void LCD_ShowNub(unsigned char Rows, unsigned char Cols, unsigned int Nub, unsigned char Len)
+ 106          {
+ 107   1              unsigned char i;
+ 108   1              Set_Position(Rows, Cols);
+ 109   1              for (i = Len; i > 0; i--)
+ 110   1              {
+ 111   2                      LCD1602_WriteData(((Nub / SetNub(10, i) % 10) + 0x30)); // 加上0x30是将数字转换成字符。例�
+             -�数字0的十六进制ASCLL码为0x00，但是字符0的十六进制ASCLL码为0x30，所以直接加0x30就可以完�
+             -�转换了。
+ 112   2              }
+ 113   1      }
+C51 COMPILER V9.60.7.0   LCD1602                                                           07/06/2024 15:44:46 PAGE 3   
+
+ 114          
+ 115          // 在特定位置，显示一个有符号数字(-32768 ~ 32767)
+ 116          void LCD_ShowSignedNub(unsigned char Rows, unsigned char Cols, int Nub, unsigned char Len)
+ 117          {
+ 118   1              unsigned char i;
+ 119   1              Set_Position(Rows, Cols);
+ 120   1              if (Nub >= 0)
+ 121   1              {
+ 122   2                      LCD1602_WriteData('+');
+ 123   2                      for (i = Len; i > 0; i--)
+ 124   2                      {
+ 125   3                              LCD1602_WriteData(((Nub / SetNub(10, i) % 10) + 0x30)); // 加上0x30是将数字转换成字符。例�
+             -��数字0的十六进制ASCLL码为0x00，但是字符0的十六进制ASCLL码为0x30，所以直接加0x30就可以完�
+             -��转换了。
+ 126   3                      }
+ 127   2              }
+ 128   1              else
+ 129   1              {
+ 130   2                      LCD1602_WriteData('-');
+ 131   2                      for (i = Len; i > 0; i--)
+ 132   2                      {
+ 133   3                              LCD1602_WriteData(((-(Nub) / SetNub(10, i) % 10) + 0x30)); // 加上0x30是将数字转换成字符。�
+             -��如数字0的十六进制ASCLL码为0x00，但是字符0的十六进制ASCLL码为0x30，所以直接加0x30就可以�
+             -��成转换了。
+ 134   3                      }
+ 135   2              }
+ 136   1      }
+ 137          
+ 138          // 在特定位置，显示一个十六进制数 (0 ~ 0xFFFF)
+ 139          void LCD_ShowHex(unsigned char Rows, unsigned char Cols, unsigned int Hex, unsigned char Len)
+ 140          {
+ 141   1              unsigned char i, HexNub;
+ 142   1              Set_Position(Rows, Cols);
+ 143   1              
+ 144   1              for (i = Len; i > 0; i--)
+ 145   1              {
+ 146   2                      HexNub = (Hex / SetNub(16, i)) % 16;
+ 147   2                      if (HexNub < 10)  LCD1602_WriteData(HexNub + 0x30);  
+ 148   2                      else LCD1602_WriteData(HexNub + 55);
+ 149   2              }
+ 150   1                      
+ 151   1      }
+ 152          
+ 153          // 在特定位置，显示一个二进制数(0 ~ 1111 1111 1111 1111)
+ 154          void LCD_ShowBin(unsigned char Rows, unsigned char Cols, unsigned int Bin, unsigned char Len)
+ 155          {
+ 156   1              unsigned char i, BinNub;
+ 157   1              Set_Position(Rows, Cols);
+ 158   1              
+ 159   1              for (i = Len; i > 0; i--)
+ 160   1              {
+ 161   2                      BinNub = (Bin / SetNub(2, i)) % 2;
+ 162   2                      LCD1602_WriteData(BinNub + 0x30);
+ 163   2              }
+ 164   1                      
+ 165   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    428    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+C51 COMPILER V9.60.7.0   LCD1602                                                           07/06/2024 15:44:46 PAGE 4   
+
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----      29
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

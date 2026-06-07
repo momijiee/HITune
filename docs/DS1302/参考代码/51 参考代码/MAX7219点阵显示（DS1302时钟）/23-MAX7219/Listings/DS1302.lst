@@ -1,0 +1,86 @@
+C51 COMPILER V9.60.7.0   DS1302                                                            07/19/2024 10:34:27 PAGE 1   
+
+
+C51 COMPILER V9.60.7.0, COMPILATION OF MODULE DS1302
+OBJECT MODULE PLACED IN .\Objects\DS1302.obj
+COMPILER INVOKED BY: E:\KEIL5\C51\BIN\C51.EXE DS1302.c OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Listings\DS13
+                    -02.lst) OBJECT(.\Objects\DS1302.obj)
+
+line level    source
+
+   1          #include <REGX52.H>
+   2          sbit DS1302_CE = P2^5;
+   3          sbit DS1302_SCLK = P2^3;
+   4          sbit DS1302_DATA = P2^4;
+   5          
+   6          void DS1302_WRITE(unsigned char Cmd, unsigned char Data)
+   7          {
+   8   1              unsigned char i;
+   9   1              DS1302_CE = 0;
+  10   1              DS1302_SCLK = 0;
+  11   1              
+  12   1              DS1302_CE = 1;
+  13   1              for (i = 0; i < 8; i++)
+  14   1              {
+  15   2                      DS1302_DATA = Cmd & (0x01 << i);
+  16   2                      DS1302_SCLK = 1;
+  17   2                      DS1302_SCLK = 0;
+  18   2              }
+  19   1              
+  20   1              for (i = 0; i < 8; i++)
+  21   1              {
+  22   2                      DS1302_DATA = Data & (0x01 << i);
+  23   2                      DS1302_SCLK = 1;
+  24   2                      DS1302_SCLK = 0;
+  25   2              }
+  26   1              
+  27   1              DS1302_CE = 0;
+  28   1              
+  29   1      }
+  30          
+  31          unsigned char DS1302_READ(unsigned char ADD)
+  32          {
+  33   1              unsigned char Data = 0, i;
+  34   1              DS1302_CE = 0;
+  35   1              DS1302_SCLK = 0;
+  36   1              
+  37   1              DS1302_CE = 1;
+  38   1              for (i = 0; i < 8; i++)
+  39   1              {
+  40   2                      DS1302_SCLK = 0;
+  41   2                      DS1302_DATA = ADD & (0x01 << i);        
+  42   2                      DS1302_SCLK = 1;
+  43   2              }
+  44   1              
+  45   1              for(i = 0; i < 8; i++)
+  46   1              {
+  47   2                      DS1302_SCLK = 1;
+  48   2                      DS1302_SCLK = 0;
+  49   2                      if (DS1302_DATA)
+  50   2                      {
+  51   3                              Data |= (0x01 << i);
+  52   3                      }       
+  53   2              }
+  54   1              
+C51 COMPILER V9.60.7.0   DS1302                                                            07/19/2024 10:34:27 PAGE 2   
+
+  55   1              DS1302_CE = 0;
+  56   1              DS1302_DATA = 0;
+  57   1              Data = (Data / 16 * 10) + (Data % 16);
+  58   1              return Data;
+  59   1      }
+  60          
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    176    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

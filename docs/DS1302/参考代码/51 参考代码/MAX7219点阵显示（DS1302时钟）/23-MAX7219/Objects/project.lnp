@@ -1,0 +1,7 @@
+".\Objects\main.obj",
+".\Objects\MAX7219.obj",
+".\Objects\Delay1ms.obj",
+".\Objects\Timer0.obj",
+".\Objects\DS1302.obj" 
+TO ".\Objects\project" 
+PRINT(".\Listings\project.m51") RAMSIZE(256) 
