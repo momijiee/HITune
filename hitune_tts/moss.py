@@ -24,6 +24,14 @@ class MossTTSConfig:
     dtype: str = "auto"
     max_new_tokens: int = 128
     bitrate: str = "128k"
+    seed: Optional[int] = 20260607
+    text_temperature: float = 0.8
+    text_top_p: float = 0.9
+    text_top_k: int = 30
+    audio_temperature: float = 0.8
+    audio_top_p: float = 0.7
+    audio_top_k: int = 15
+    audio_repetition_penalty: float = 1.0
     loudness_i: float = -18.0
     loudness_lra: float = 7.0
     loudness_tp: float = -1.5
@@ -128,11 +136,23 @@ class MossTTSEngine:
         input_ids = batch["input_ids"].to(self.device)
         attention_mask = batch["attention_mask"].to(self.device)
 
+        if self.config.seed is not None:
+            torch.manual_seed(self.config.seed)
+            if self.device.startswith("cuda"):
+                torch.cuda.manual_seed_all(self.config.seed)
+
         with torch.no_grad():
             outputs = self._model.generate(
                 input_ids=input_ids,
                 attention_mask=attention_mask,
                 max_new_tokens=max_new_tokens or self.config.max_new_tokens,
+                text_temperature=self.config.text_temperature,
+                text_top_p=self.config.text_top_p,
+                text_top_k=self.config.text_top_k,
+                audio_temperature=self.config.audio_temperature,
+                audio_top_p=self.config.audio_top_p,
+                audio_top_k=self.config.audio_top_k,
+                audio_repetition_penalty=self.config.audio_repetition_penalty,
             )
 
         decoded = list(self._processor.decode(outputs))
