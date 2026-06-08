@@ -243,7 +243,7 @@ static bool DS1302_IsValidDateTime(const DS1302_DateTime_t *time)
     return true;
 }
 
-void DS1302_Init(void)
+static void DS1302_Init(void)
 {
     DL_GPIO_initDigitalOutput(DS1302_CE_IOMUX);
     DL_GPIO_initDigitalOutput(DS1302_SCLK_IOMUX);
@@ -258,7 +258,7 @@ void DS1302_Init(void)
     DL_GPIO_enableOutput(DS1302_IO_PORT, DS1302_IO_PIN);
 }
 
-DS1302_Status_t DS1302_GetDateTime(DS1302_DateTime_t *time)
+static DS1302_Status_t DS1302_GetDateTime(DS1302_DateTime_t *time)
 {
     uint8_t raw[8];
 
@@ -289,7 +289,7 @@ DS1302_Status_t DS1302_GetDateTime(DS1302_DateTime_t *time)
     return DS1302_OK;
 }
 
-DS1302_Status_t DS1302_SetDateTime(const DS1302_DateTime_t *time)
+static DS1302_Status_t DS1302_SetDateTime(const DS1302_DateTime_t *time)
 {
     if(time == NULL) {
         return DS1302_ERR_NULL;

@@ -28,9 +28,9 @@ typedef enum {
     DS1302_ERR_CLOCK_HALTED
 } DS1302_Status_t;
 
-void DS1302_Init(void);
-DS1302_Status_t DS1302_GetDateTime(DS1302_DateTime_t *time);
-DS1302_Status_t DS1302_SetDateTime(const DS1302_DateTime_t *time);
+// void DS1302_Init(void);
+// DS1302_Status_t DS1302_GetDateTime(DS1302_DateTime_t *time);
+// DS1302_Status_t DS1302_SetDateTime(const DS1302_DateTime_t *time);
 DS1302_Status_t DS1302_SetDateTimeOnce(const DS1302_DateTime_t *time);
 bool DS1302_IsClockHalted(void);
 void DS1302_StartClock(void);

@@ -82,19 +82,13 @@ extern "C" {
 #define PWM_INST                                                           TIMA1
 #define PWM_INST_IRQHandler                                     TIMA1_IRQHandler
 #define PWM_INST_INT_IRQN                                       (TIMA1_INT_IRQn)
-#define PWM_INST_CLK_FREQ                                               32000000
+#define PWM_INST_CLK_FREQ                                                4000000
 /* GPIO defines for channel 0 */
 #define GPIO_PWM_C0_PORT                                                   GPIOA
 #define GPIO_PWM_C0_PIN                                           DL_GPIO_PIN_15
 #define GPIO_PWM_C0_IOMUX                                        (IOMUX_PINCM37)
 #define GPIO_PWM_C0_IOMUX_FUNC                       IOMUX_PINCM37_PF_TIMA1_CCP0
 #define GPIO_PWM_C0_IDX                                      DL_TIMER_CC_0_INDEX
-/* GPIO defines for channel 1 */
-#define GPIO_PWM_C1_PORT                                                   GPIOA
-#define GPIO_PWM_C1_PIN                                           DL_GPIO_PIN_16
-#define GPIO_PWM_C1_IOMUX                                        (IOMUX_PINCM38)
-#define GPIO_PWM_C1_IOMUX_FUNC                       IOMUX_PINCM38_PF_TIMA1_CCP1
-#define GPIO_PWM_C1_IDX                                      DL_TIMER_CC_1_INDEX
 
 
 
@@ -135,17 +129,24 @@ extern "C" {
 
 
 
-/* Defines for ADC12_0 */
-#define ADC12_0_INST                                                        ADC0
-#define ADC12_0_INST_IRQHandler                                  ADC0_IRQHandler
-#define ADC12_0_INST_INT_IRQN                                    (ADC0_INT_IRQn)
-#define ADC12_0_ADCMEM_0                                      DL_ADC12_MEM_IDX_0
-#define ADC12_0_ADCMEM_0_REF                     DL_ADC12_REFERENCE_VOLTAGE_VDDA
-#define ADC12_0_ADCMEM_0_REF_VOLTAGE_V                                       3.3
-#define GPIO_ADC12_0_C0_PORT                                               GPIOA
-#define GPIO_ADC12_0_C0_PIN                                       DL_GPIO_PIN_27
-#define GPIO_ADC12_0_IOMUX_C0                                    (IOMUX_PINCM60)
-#define GPIO_ADC12_0_IOMUX_C0_FUNC                (IOMUX_PINCM60_PF_UNCONNECTED)
+/* Defines for ADC */
+#define ADC_INST                                                            ADC0
+#define ADC_INST_IRQHandler                                      ADC0_IRQHandler
+#define ADC_INST_INT_IRQN                                        (ADC0_INT_IRQn)
+#define ADC_ADCMEM_CH27                                       DL_ADC12_MEM_IDX_0
+#define ADC_ADCMEM_CH27_REF                      DL_ADC12_REFERENCE_VOLTAGE_VDDA
+#define ADC_ADCMEM_CH27_REF_VOLTAGE_V                                        3.3
+#define ADC_ADCMEM_CH26                                       DL_ADC12_MEM_IDX_1
+#define ADC_ADCMEM_CH26_REF                      DL_ADC12_REFERENCE_VOLTAGE_VDDA
+#define ADC_ADCMEM_CH26_REF_VOLTAGE_V                                        3.3
+#define GPIO_ADC_C0_PORT                                                   GPIOA
+#define GPIO_ADC_C0_PIN                                           DL_GPIO_PIN_27
+#define GPIO_ADC_IOMUX_C0                                        (IOMUX_PINCM60)
+#define GPIO_ADC_IOMUX_C0_FUNC                    (IOMUX_PINCM60_PF_UNCONNECTED)
+#define GPIO_ADC_C1_PORT                                                   GPIOA
+#define GPIO_ADC_C1_PIN                                           DL_GPIO_PIN_26
+#define GPIO_ADC_IOMUX_C1                                        (IOMUX_PINCM59)
+#define GPIO_ADC_IOMUX_C1_FUNC                    (IOMUX_PINCM59_PF_UNCONNECTED)
 
 
 
@@ -201,7 +202,7 @@ void SYSCFG_DL_SYSCTL_init(void);
 void SYSCFG_DL_PWM_init(void);
 void SYSCFG_DL_UART_init(void);
 void SYSCFG_DL_UART_PLR_init(void);
-void SYSCFG_DL_ADC12_0_init(void);
+void SYSCFG_DL_ADC_init(void);
 
 void SYSCFG_DL_SYSTICK_init(void);
 

@@ -55,7 +55,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_init(void)
     SYSCFG_DL_PWM_init();
     SYSCFG_DL_UART_init();
     SYSCFG_DL_UART_PLR_init();
-    SYSCFG_DL_ADC12_0_init();
+    SYSCFG_DL_ADC_init();
     SYSCFG_DL_SYSTICK_init();
     /* Ensure backup structures have no valid state */
 	gPWMBackup.backupRdy 	= false;
@@ -92,7 +92,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_TimerA_reset(PWM_INST);
     DL_UART_Main_reset(UART_INST);
     DL_UART_Main_reset(UART_PLR_INST);
-    DL_ADC12_reset(ADC12_0_INST);
+    DL_ADC12_reset(ADC_INST);
 
 
     DL_GPIO_enablePower(GPIOA);
@@ -100,7 +100,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_initPower(void)
     DL_TimerA_enablePower(PWM_INST);
     DL_UART_Main_enablePower(UART_INST);
     DL_UART_Main_enablePower(UART_PLR_INST);
-    DL_ADC12_enablePower(ADC12_0_INST);
+    DL_ADC12_enablePower(ADC_INST);
 
     delay_cycles(POWER_STARTUP_DELAY);
 }
@@ -110,8 +110,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initPeripheralOutputFunction(GPIO_PWM_C0_IOMUX,GPIO_PWM_C0_IOMUX_FUNC);
     DL_GPIO_enableOutput(GPIO_PWM_C0_PORT, GPIO_PWM_C0_PIN);
-    DL_GPIO_initPeripheralOutputFunction(GPIO_PWM_C1_IOMUX,GPIO_PWM_C1_IOMUX_FUNC);
-    DL_GPIO_enableOutput(GPIO_PWM_C1_PORT, GPIO_PWM_C1_PIN);
 
     DL_GPIO_initPeripheralOutputFunction(
         GPIO_UART_IOMUX_TX, GPIO_UART_IOMUX_TX_FUNC);
@@ -138,11 +136,13 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 
     DL_GPIO_initDigitalOutput(DS1302_SCLK_IOMUX);
 
-    DL_GPIO_initDigitalOutput(DS1302_IO_IOMUX);
+    DL_GPIO_initDigitalInputFeatures(DS1302_IO_IOMUX,
+		 DL_GPIO_INVERSION_DISABLE, DL_GPIO_RESISTOR_PULL_UP,
+		 DL_GPIO_HYSTERESIS_DISABLE, DL_GPIO_WAKEUP_DISABLE);
 
     DL_GPIO_initDigitalOutput(DS1302_CE_IOMUX);
 
-    DL_GPIO_clearPins(GPIOA, DS1302_IO_PIN |
+    DL_GPIO_clearPins(GPIOA, DS1302_SCLK_PIN |
 		DS1302_CE_PIN);
     DL_GPIO_setPins(GPIOA, I2C_SCL_PIN |
 		I2C_SDA_PIN |
@@ -150,8 +150,7 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		OLED_SDA_OLED_PIN |
 		OLED_RES_OLED_PIN |
 		OLED_DC_OLED_PIN |
-		OLED_CS_OLED_PIN |
-		DS1302_SCLK_PIN);
+		OLED_CS_OLED_PIN);
     DL_GPIO_enableOutput(GPIOA, I2C_SCL_PIN |
 		I2C_SDA_PIN |
 		OLED_SCL_OLED_PIN |
@@ -160,7 +159,6 @@ SYSCONFIG_WEAK void SYSCFG_DL_GPIO_init(void)
 		OLED_DC_OLED_PIN |
 		OLED_CS_OLED_PIN |
 		DS1302_SCLK_PIN |
-		DS1302_IO_PIN |
 		DS1302_CE_PIN);
 
 }
@@ -184,13 +182,13 @@ SYSCONFIG_WEAK void SYSCFG_DL_SYSCTL_init(void)
 
 
 /*
- * Timer clock configuration to be sourced by  / 1 (32000000 Hz)
+ * Timer clock configuration to be sourced by  / 8 (4000000 Hz)
  * timerClkFreq = (timerClkSrc / (timerClkDivRatio * (timerClkPrescale + 1)))
- *   32000000 Hz = 32000000 Hz / (1 * (0 + 1))
+ *   4000000 Hz = 4000000 Hz / (8 * (0 + 1))
  */
 static const DL_TimerA_ClockConfig gPWMClockConfig = {
     .clockSel = DL_TIMER_CLOCK_BUSCLK,
-    .divideRatio = DL_TIMER_CLOCK_DIVIDE_1,
+    .divideRatio = DL_TIMER_CLOCK_DIVIDE_8,
     .prescale = 0U
 };
 
@@ -198,7 +196,7 @@ static const DL_TimerA_PWMConfig gPWMConfig = {
     .pwmMode = DL_TIMER_PWM_MODE_EDGE_ALIGN,
     .period = 1000,
     .isTimerWithFourCC = false,
-    .startTimer = DL_TIMER_STOP,
+    .startTimer = DL_TIMER_START,
 };
 
 SYSCONFIG_WEAK void SYSCFG_DL_PWM_init(void) {
@@ -219,18 +217,11 @@ SYSCONFIG_WEAK void SYSCFG_DL_PWM_init(void) {
     DL_TimerA_setCaptCompUpdateMethod(PWM_INST, DL_TIMER_CC_UPDATE_METHOD_IMMEDIATE, DL_TIMERA_CAPTURE_COMPARE_0_INDEX);
     DL_TimerA_setCaptureCompareValue(PWM_INST, 1000, DL_TIMER_CC_0_INDEX);
 
-    DL_TimerA_setCaptureCompareOutCtl(PWM_INST, DL_TIMER_CC_OCTL_INIT_VAL_LOW,
-		DL_TIMER_CC_OCTL_INV_OUT_DISABLED, DL_TIMER_CC_OCTL_SRC_FUNCVAL,
-		DL_TIMERA_CAPTURE_COMPARE_1_INDEX);
-
-    DL_TimerA_setCaptCompUpdateMethod(PWM_INST, DL_TIMER_CC_UPDATE_METHOD_IMMEDIATE, DL_TIMERA_CAPTURE_COMPARE_1_INDEX);
-    DL_TimerA_setCaptureCompareValue(PWM_INST, 1000, DL_TIMER_CC_1_INDEX);
-
     DL_TimerA_enableClock(PWM_INST);
 
 
     
-    DL_TimerA_setCCPDirection(PWM_INST , DL_TIMER_CC0_OUTPUT | DL_TIMER_CC1_OUTPUT );
+    DL_TimerA_setCCPDirection(PWM_INST , DL_TIMER_CC0_OUTPUT );
 
 
 }
@@ -303,19 +294,33 @@ SYSCONFIG_WEAK void SYSCFG_DL_UART_PLR_init(void)
     DL_UART_Main_enable(UART_PLR_INST);
 }
 
-/* ADC12_0 Initialization */
-static const DL_ADC12_ClockConfig gADC12_0ClockConfig = {
+/* ADC Initialization */
+static const DL_ADC12_ClockConfig gADCClockConfig = {
     .clockSel       = DL_ADC12_CLOCK_SYSOSC,
-    .divideRatio    = DL_ADC12_CLOCK_DIVIDE_1,
+    .divideRatio    = DL_ADC12_CLOCK_DIVIDE_8,
     .freqRange      = DL_ADC12_CLOCK_FREQ_RANGE_24_TO_32,
 };
-SYSCONFIG_WEAK void SYSCFG_DL_ADC12_0_init(void)
+SYSCONFIG_WEAK void SYSCFG_DL_ADC_init(void)
 {
-    DL_ADC12_setClockConfig(ADC12_0_INST, (DL_ADC12_ClockConfig *) &gADC12_0ClockConfig);
-    DL_ADC12_configConversionMem(ADC12_0_INST, ADC12_0_ADCMEM_0,
+    DL_ADC12_setClockConfig(ADC_INST, (DL_ADC12_ClockConfig *) &gADCClockConfig);
+
+    DL_ADC12_initSeqSample(ADC_INST,
+        DL_ADC12_REPEAT_MODE_DISABLED, DL_ADC12_SAMPLING_SOURCE_AUTO, DL_ADC12_TRIG_SRC_SOFTWARE,
+        DL_ADC12_SEQ_START_ADDR_00, DL_ADC12_SEQ_END_ADDR_01, DL_ADC12_SAMP_CONV_RES_12_BIT,
+        DL_ADC12_SAMP_CONV_DATA_FORMAT_UNSIGNED);
+    DL_ADC12_configConversionMem(ADC_INST, ADC_ADCMEM_CH27,
         DL_ADC12_INPUT_CHAN_0, DL_ADC12_REFERENCE_VOLTAGE_VDDA, DL_ADC12_SAMPLE_TIMER_SOURCE_SCOMP0, DL_ADC12_AVERAGING_MODE_DISABLED,
         DL_ADC12_BURN_OUT_SOURCE_DISABLED, DL_ADC12_TRIGGER_MODE_AUTO_NEXT, DL_ADC12_WINDOWS_COMP_MODE_DISABLED);
-    DL_ADC12_enableConversions(ADC12_0_INST);
+    DL_ADC12_configConversionMem(ADC_INST, ADC_ADCMEM_CH26,
+        DL_ADC12_INPUT_CHAN_1, DL_ADC12_REFERENCE_VOLTAGE_VDDA, DL_ADC12_SAMPLE_TIMER_SOURCE_SCOMP0, DL_ADC12_AVERAGING_MODE_DISABLED,
+        DL_ADC12_BURN_OUT_SOURCE_DISABLED, DL_ADC12_TRIGGER_MODE_AUTO_NEXT, DL_ADC12_WINDOWS_COMP_MODE_DISABLED);
+    DL_ADC12_setSampleTime0(ADC_INST,40000);
+    /* Enable ADC12 interrupt */
+    DL_ADC12_clearInterruptStatus(ADC_INST,(DL_ADC12_INTERRUPT_MEM0_RESULT_LOADED
+		 | DL_ADC12_INTERRUPT_MEM1_RESULT_LOADED));
+    DL_ADC12_enableInterrupt(ADC_INST,(DL_ADC12_INTERRUPT_MEM0_RESULT_LOADED
+		 | DL_ADC12_INTERRUPT_MEM1_RESULT_LOADED));
+    DL_ADC12_enableConversions(ADC_INST);
 }
 
 SYSCONFIG_WEAK void SYSCFG_DL_SYSTICK_init(void)
