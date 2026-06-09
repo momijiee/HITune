@@ -77,19 +77,4 @@ void TaskTracker_Run(void)
 
         Servo_SetAngle((uint16_t)current_angle);
     }
-
-    /* ---- 4. 调试打印（低频，避免占用过多串口带宽） ---- */
-    if (IsTimeUp(&s_debug_tick, DEBUG_PRINT_INTERVAL_MS)) {
-        printf("TRK| CH27:%4d(%d.%d%dV) CH26:%4d(%d.%d%dV) diff:%4d angle:%3d\r\n",
-               adc_result.ch27_raw,
-               adc_result.ch27_voltage / 100,
-               adc_result.ch27_voltage / 10 % 10,
-               adc_result.ch27_voltage % 10,
-               adc_result.ch26_raw,
-               adc_result.ch26_voltage / 100,
-               adc_result.ch26_voltage / 10 % 10,
-               adc_result.ch26_voltage % 10,
-               adc_result.diff,
-               current_angle);
-    }
 }

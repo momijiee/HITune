@@ -94,4 +94,5 @@
   ..\Tasks\soft_timer.h ..\Tasks\task_fsm.h ..\BSP\bsp_voice.h \
   ..\Tasks\task_player.h ..\BSP\bsp_player.h ..\Tasks\task_tracker.h \
   ..\Tasks\task_clock.h ..\Tasks\task_display.h ..\BSP\bsp_adc.h \
+  ..\BSP\oled.h D:\Software\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdlib.h \
   D:\Software\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h

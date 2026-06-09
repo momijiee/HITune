@@ -117,9 +117,8 @@ PWM1.peripheral.ccp0Pin.$assign         = "PA15";
 SYSCTL.forceDefaultClkConfig = true;
 SYSCTL.clockTreeEn           = true;
 
-SYSTICK.periodEnable  = true;
-SYSTICK.period        = 32;
-SYSTICK.systickEnable = true;
+SYSTICK.periodEnable  = false;
+SYSTICK.systickEnable = false;
 
 UART1.$name                            = "UART";
 UART1.uartClkSrc                       = "MFCLK";

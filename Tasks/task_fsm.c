@@ -6,19 +6,35 @@
 
 /*============ 内部变量 ============*/
 static PlayState_t  s_state              = ST_IDLE;
+static PlayState_t  s_prev_state         = ST_IDLE;   // 新增：用于检测状态变化
 static uint32_t     s_voice_poll_tick    = 0;
-static uint32_t     s_timeout_start      = 0;   // 改用绝对起始时刻
+static uint32_t     s_timeout_tick       = 0;
 static uint8_t      s_hello_repeat_count = 0;
 static uint8_t      s_last_voice_id      = 0x00;
 
 #define VOICE_POLL_MS       100
 #define TIMEOUT_MS          10000
 
-/*============ 内部函数 ============*/
+/*============ 内部函数声明 ============*/
 static StateEvent_t MapVoiceIdToEvent(uint8_t voice_id);
 static void         FSM_Process(StateEvent_t event);
-static void         FSM_EnterState(PlayState_t new_state);
-static void         FSM_OnEnter(PlayState_t entered_state); 
+static void         FSM_OnEnter(PlayState_t new_state);  // 新增：状态入口动作
+
+/*============ 调试输出 ============*/
+static void Debug_Print(const char *msg)
+{
+    while (*msg) {
+        while(DL_UART_isBusy(UART_INST));
+        DL_UART_Main_transmitData(UART_INST, *msg++);
+    }
+}
+
+static void Debug_PrintState(const char *prefix, PlayState_t st)
+{
+    char buf[48];
+    sprintf(buf, "%s -> State=%d\r\n", prefix, (int)st);
+    Debug_Print(buf);
+}
 
 /*============ 状态名称表 ============*/
 static const char* s_state_names[] = {
@@ -32,7 +48,7 @@ static const char* s_state_names[] = {
     [ST_SAD_BETTER]      = "Better?",
     [ST_SAD_STILL]       = "StillSad",
     [ST_SAD_REBEL]       = "Rebel",
-    [ST_SAD_DEEP]        = "Deep",
+    [ST_SAD_DEEP]        = "DeepSad",
     [ST_SILENT_GUARD]    = "Guard",
     [ST_WAKE_UP_SUN]     = "WakeUp",
     [ST_HAPPY_RECV]      = "Happy!",
@@ -57,7 +73,7 @@ static const char* s_state_names[] = {
     [ST_RES_SUNFLOWER]   = "Sunflwr",
     [ST_RES_CACTUS]      = "Cactus",
     [ST_RES_MIMOSA]      = "Mimosa",
-    [ST_RES_MUSHROOM]    = "Mushroom",
+    [ST_RES_MUSHROOM]    = "Mushrom",
     [ST_GAME_OVER]       = "GameEnd",
     [ST_GAME_HAPPY]      = "GameYay",
     [ST_GAME_SAD]        = "GameSad",
@@ -66,15 +82,15 @@ static const char* s_state_names[] = {
     [ST_EGG_2]           = "Easter2",
 };
 
-/*============ 状态切换统一入口（带调试打印） ============*/
-static void FSM_EnterState(PlayState_t new_state)
+/*============ 状态切换（统一入口） ============*/
+static void ChangeState(PlayState_t new_state)
 {
     if (s_state != new_state) {
-        printf("FSM| %s -> %s\r\n",
-               (s_state < ST_COUNT && s_state_names[s_state]) ? s_state_names[s_state] : "?",
-               (new_state < ST_COUNT && s_state_names[new_state]) ? s_state_names[new_state] : "?");
+        Debug_PrintState("Leave", s_state);
+        s_prev_state = s_state;
         s_state = new_state;
-        s_timeout_start = GetTick();  // 每次进入新状态重置超时计时
+        Debug_PrintState("Enter", s_state);
+        FSM_OnEnter(new_state);
     }
 }
 
@@ -82,47 +98,44 @@ static void FSM_EnterState(PlayState_t new_state)
 void TaskFSM_Init(void)
 {
     s_state           = ST_IDLE;
+    s_prev_state      = ST_IDLE;
     s_voice_poll_tick = GetTick();
-    s_timeout_start   = GetTick();
+    s_timeout_tick    = GetTick();
     s_last_voice_id   = 0x00;
+
     TaskPlayer_Init();
+    Debug_Print("FSM Init OK\r\n");
 }
 
 /*============ 主运行函数 ============*/
 void TaskFSM_Run(void)
 {
-    /*
-     * 修复核心：一轮只处理一个事件
-     * 优先级：PLAYER_DONE > 语音输入 > 超时
-     */
     StateEvent_t event = EVENT_NONE;
 
-    /* ---- 优先级1：播放器延时完成 ---- */
+    /* ---- 1. 播放器延时管理（每轮都要跑） ---- */
+    TaskPlayer_Run();
+
+    /* ---- 2. 检查延时完成事件 ---- */
     uint8_t pending_state;
     if (TaskPlayer_PopPendingState(&pending_state)) {
-        /*
-         * 关键修复：不在这里直接改 s_state
-         * 而是让 FSM_Process 在当前状态下处理 PLAYER_DONE 事件
-         * 同时把目标状态传进去
-         */
-        FSM_EnterState((PlayState_t)pending_state);
-        
-        /*
-         * 某些状态进入后需要立即播放语音（入口动作）
-         * 在这里统一处理
-         */
-        FSM_OnEnter((PlayState_t)pending_state);
-        return;  // 本轮只处理这一个事件
-    }
-
-    /* ---- 优先级2：定时轮询语音 ---- */
-    if (!IsTimeUp(&s_voice_poll_tick, VOICE_POLL_MS)) {
+        Debug_Print("PlayerDone -> auto jump\r\n");
+        ChangeState((PlayState_t)pending_state);
+        // 入口动作已在 ChangeState -> FSM_OnEnter 中执行
+        // 不需要再走下面的事件处理
         return;
     }
 
-    /* 播放器忙时不接受新语音输入 */
+    /* ---- 3. 如果播放器正在延时，不接受新的语音输入 ---- */
     if (TaskPlayer_IsBusy()) {
-        Voice_Module_ReadID();  // 读取并丢弃，防残留
+        // 仍然要定期读取语音模块，防止IIC数据堆积
+        if (IsTimeUp(&s_voice_poll_tick, VOICE_POLL_MS)) {
+            Voice_Module_ReadID();  // 读取并丢弃
+        }
+        return;
+    }
+
+    /* ---- 4. 定时轮询语音模块 ---- */
+    if (!IsTimeUp(&s_voice_poll_tick, VOICE_POLL_MS)) {
         return;
     }
 
@@ -131,25 +144,25 @@ void TaskFSM_Run(void)
     if (cur_id != 0x00 && cur_id != s_last_voice_id) {
         event = MapVoiceIdToEvent(cur_id);
         if (event != EVENT_NONE) {
-            s_timeout_start = GetTick();  // 重置超时
-            printf("FSM| Voice:0x%02X -> Event:%d\r\n", cur_id, event);
+            char buf[32];
+            sprintf(buf, "Voice:0x%02X Evt:%d\r\n", cur_id, (int)event);
+            Debug_Print(buf);
+            s_timeout_tick = GetTick();
         }
     }
     else if (cur_id == 0x00) {
-        /* 超时检测 */
         if (s_state != ST_IDLE && s_state != ST_SILENT_GUARD) {
-            if (HasElapsed(s_timeout_start, TIMEOUT_MS)) {
+            if (HasElapsed(s_timeout_tick, TIMEOUT_MS)) {
                 event = EVENT_TIMEOUT;
-                s_timeout_start = GetTick();
-                printf("FSM| Timeout in state %s\r\n",
-                       s_state_names[s_state] ? s_state_names[s_state] : "?");
+                s_timeout_tick = GetTick();
+                Debug_Print("TIMEOUT\r\n");
             }
         }
     }
 
     s_last_voice_id = cur_id;
 
-    /* ---- 驱动状态机 ---- */
+    /* ---- 5. 驱动状态机 ---- */
     if (event != EVENT_NONE) {
         FSM_Process(event);
     }
@@ -165,10 +178,10 @@ const char* TaskFSM_GetStateName(void)
     if (s_state < ST_COUNT && s_state_names[s_state] != NULL) {
         return s_state_names[s_state];
     }
-    return "Unknown";
+    return "???";
 }
 
-/*============ 语音ID映射（不变） ============*/
+/*============ 语音ID映射 ============*/
 static StateEvent_t MapVoiceIdToEvent(uint8_t voice_id)
 {
     switch(voice_id)
@@ -187,354 +200,404 @@ static StateEvent_t MapVoiceIdToEvent(uint8_t voice_id)
     }
 }
 
-/*============================================================
- * 状态入口动作：当 TaskPlayer 延时跳转完成进入新状态时
- * 某些状态需要立即播放语音
- *============================================================*/
-static void FSM_OnEnter(PlayState_t entered_state)
+/*================================================================
+ * 状态入口动作
+ * 
+ * 核心修复：当延时跳转到达目标状态时，自动执行该状态的"入口语音"
+ * 这样就不需要在源状态的 EVENT_PLAYER_DONE 分支中处理了
+ *================================================================*/
+static void FSM_OnEnter(PlayState_t new_state)
 {
-    switch (entered_state)
+    switch (new_state)
     {
+        /* -- 延时跳转后需要立即播放语音的状态 -- */
+
         case ST_IDLE:
-            /* 回到待机，无需播放 */
+            // 回到待机，不播语音
+            Debug_Print("[Idle] Sleeping...\r\n");
             break;
 
         case ST_WAKE:
-            /* 从各种分支返回主菜单，无需额外播放 */
+            // 从各种路径回到 WAKE，不需要额外语音
+            // （唤醒语音在 FSM_Process 的 ST_IDLE->ST_WAKE 中已播放）
+            Debug_Print("[Wake] Ready for command\r\n");
             break;
 
         case ST_JOKE_2:
-            /* 从 JOKE_1_BAD 延时跳转过来，需要播放笑话2 */
+            // 从 ST_JOKE_1_BAD 延时跳转过来，需要播放笑话2
             TaskPlayer_PlayVoice(34, 0, 0);
+            Debug_Print("[Joke2] Playing joke 2\r\n");
             break;
 
         case ST_JOKE_3:
-            /* 从 JOKE_2_BAD 延时跳转过来，需要播放笑话3 */
+            // 从 ST_JOKE_2_BAD 延时跳转过来
             TaskPlayer_PlayVoice(37, 0, 0);
+            Debug_Print("[Joke3] Playing joke 3\r\n");
+            break;
+
+        case ST_JOKE_END:
+            // 从 ST_JOKE_3 或其他路径到达
+            TaskPlayer_PlayVoice(38, 0, 0);
+            Debug_Print("[JokeEnd] Summary\r\n");
             break;
 
         case ST_GAME_START:
-            /* 从 JOKE_LOSE 延时跳转过来 */
+            // 从 ST_JOKE_LOSE 延时跳转过来
             TaskPlayer_PlayVoice(41, 0, 0);
+            Debug_Print("[GameStart] Wanna play?\r\n");
             break;
 
         case ST_GAME_OVER:
-            /* 从结果状态延时跳转过来，播放结算语音 */
+            // 从 ST_RES_xxx 延时跳转过来
             TaskPlayer_PlayVoice(49, 0, 0);
+            Debug_Print("[GameOver] Result\r\n");
             break;
 
         case ST_SILENT_GUARD:
-            /* 进入静默守护，无需播放 */
+            // 从 ST_SAD_DEEP 延时跳转过来
+            Debug_Print("[Guard] Silent watching...\r\n");
             break;
 
         default:
+            // 其他状态不需要入口动作
             break;
     }
 }
 
-/*============================================================
- * 核心状态机（简化清晰版）
+/*================================================================
+ * 核心状态机（纯事件驱动，不含延时，不含 PLAYER_DONE 处理）
  * 
  * 规则：
- * 1. 每个 case 只处理用户语音事件和超时事件
- * 2. PLAYER_DONE 导致的状态跳转由 FSM_OnEnter 处理
- * 3. 不再有递归调用
- * 4. 状态切换统一用 FSM_EnterState()
- *============================================================*/
+ *   1. 需要"播放后等一段时间再跳转"的：
+ *      TaskPlayer_PlayVoice(voice_id, wait_ms, target_state)
+ *      → 延时到期后 ChangeState(target_state) → FSM_OnEnter()自动播下一段
+ *   
+ *   2. 需要"播放后立即等待用户输入"的：
+ *      TaskPlayer_PlayVoice(voice_id, 0, 0)
+ *      → 不设延时，等用户语音触发下一个事件
+ *   
+ *   3. 状态切换统一走 ChangeState()
+ *================================================================*/
 static void FSM_Process(StateEvent_t event)
 {
     /* ---- 彩蛋检测 ---- */
-    if (event == EVENT_HELLO && s_state != ST_IDLE && s_state != ST_SILENT_GUARD) {
+    if (event == EVENT_HELLO && s_state != ST_IDLE) {
         s_hello_repeat_count++;
         if (s_hello_repeat_count >= 3) {
-            FSM_EnterState(ST_EGG_1);
+            ChangeState(ST_EGG_1);
             TaskPlayer_PlayVoice(53, 5000, ST_WAKE);
             s_hello_repeat_count = 0;
             return;
         }
-    } else if (event != EVENT_TIMEOUT) {
+    } else {
         s_hello_repeat_count = 0;
     }
 
     switch (s_state)
     {
-        /* ===== 基础 ===== */
+        /* ==================== 1. 基础唤醒 ==================== */
         case ST_IDLE:
             if (event == EVENT_HELLO) {
-                FSM_EnterState(ST_WAKE);
+                ChangeState(ST_WAKE);
                 TaskPlayer_PlayVoice(2, 0, 0);
             } else if (event == EVENT_SAD) {
-                FSM_EnterState(ST_SAD_RECV);
+                ChangeState(ST_SAD_RECV);
                 TaskPlayer_PlayVoice(11, 0, 0);
             }
+            // 其他事件在IDLE状态下忽略
             break;
 
         case ST_WAKE:
             if (event == EVENT_TIME) {
-                FSM_EnterState(ST_TIME);
+                ChangeState(ST_TIME);
                 TaskPlayer_PlayVoice(3, 5000, ST_WAKE);
             } else if (event == EVENT_SAD) {
-                FSM_EnterState(ST_SAD_RECV);
+                ChangeState(ST_SAD_RECV);
                 TaskPlayer_PlayVoice(11, 0, 0);
             } else if (event == EVENT_HAPPY) {
-                FSM_EnterState(ST_HAPPY_RECV);
+                ChangeState(ST_HAPPY_RECV);
                 TaskPlayer_PlayVoice(21, 0, 0);
             } else if (event == EVENT_JOKE) {
-                FSM_EnterState(ST_JOKE_1);
+                ChangeState(ST_JOKE_1);
                 TaskPlayer_PlayVoice(31, 0, 0);
             } else if (event == EVENT_GAME) {
-                FSM_EnterState(ST_GAME_START);
+                ChangeState(ST_GAME_START);
                 TaskPlayer_PlayVoice(41, 0, 0);
             } else if (event == EVENT_TIMEOUT || event == EVENT_NO) {
-                FSM_EnterState(ST_BYE);
+                ChangeState(ST_BYE);
                 TaskPlayer_PlayVoice(4, 3000, ST_IDLE);
             }
             break;
 
         case ST_TIME:
-            /* 延时跳转回 ST_WAKE，此处无需处理 */
+            // 延时自动回 ST_WAKE
+            // 用户提前打断：直接切回 WAKE 让 WAKE 处理
+            if (event == EVENT_SAD || event == EVENT_HAPPY ||
+                event == EVENT_JOKE || event == EVENT_GAME) {
+                ChangeState(ST_WAKE);
+                FSM_Process(event);
+            }
             break;
 
-        /* ===== 负面情绪 ===== */
+        /* ==================== 2. 负面情绪 ==================== */
         case ST_SAD_RECV:
             if (event == EVENT_YES || event == EVENT_SAD) {
-                FSM_EnterState(ST_PLAY_SAD_MUSIC);
+                ChangeState(ST_PLAY_SAD_MUSIC);
                 TaskPlayer_PlayMusic(1);
                 TaskPlayer_PlayVoice(12, 0, 0);
             } else if (event == EVENT_NO) {
-                FSM_EnterState(ST_SAD_TALK);
+                ChangeState(ST_SAD_TALK);
                 TaskPlayer_PlayVoice(13, 0, 0);
             } else if (event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_BYE);
+                ChangeState(ST_BYE);
                 TaskPlayer_PlayVoice(4, 3000, ST_IDLE);
             }
             break;
 
         case ST_PLAY_SAD_MUSIC:
             if (event == EVENT_YES || event == EVENT_HAPPY) {
-                FSM_EnterState(ST_SAD_BETTER);
+                ChangeState(ST_SAD_BETTER);
                 TaskPlayer_PlayVoice(14, 0, 0);
             } else if (event == EVENT_NO || event == EVENT_SAD) {
-                FSM_EnterState(ST_SAD_STILL);
+                ChangeState(ST_SAD_STILL);
                 TaskPlayer_PlayVoice(15, 0, 0);
             } else if (event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_SAD_BETTER);
+                ChangeState(ST_SAD_BETTER);
                 TaskPlayer_PlayVoice(14, 0, 0);
             }
             break;
 
         case ST_SAD_TALK:
             if (event == EVENT_YES) {
-                FSM_EnterState(ST_SAD_BETTER);
+                ChangeState(ST_SAD_BETTER);
                 TaskPlayer_PlayVoice(14, 0, 0);
             } else if (event == EVENT_NO) {
-                FSM_EnterState(ST_SAD_REBEL);
+                ChangeState(ST_SAD_REBEL);
                 TaskPlayer_PlayVoice(16, 3000, ST_IDLE);
             } else if (event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_BYE);
+                ChangeState(ST_BYE);
                 TaskPlayer_PlayVoice(4, 3000, ST_IDLE);
             }
             break;
 
         case ST_SAD_BETTER:
             if (event == EVENT_YES) {
-                FSM_EnterState(ST_JOKE_1);
+                ChangeState(ST_JOKE_1);
                 TaskPlayer_PlayVoice(31, 0, 0);
             } else if (event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_BYE);
+                ChangeState(ST_BYE);
                 TaskPlayer_PlayVoice(4, 3000, ST_IDLE);
             }
             break;
 
         case ST_SAD_STILL:
             if (event == EVENT_YES) {
-                FSM_EnterState(ST_BYE);
+                ChangeState(ST_BYE);
                 TaskPlayer_PlayVoice(4, 3000, ST_IDLE);
             } else if (event == EVENT_NO) {
-                FSM_EnterState(ST_SAD_DEEP);
+                ChangeState(ST_SAD_DEEP);
                 TaskPlayer_PlayVoice(17, 6000, ST_SILENT_GUARD);
             } else if (event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_SILENT_GUARD);
-                TaskPlayer_PlayVoice(17, 0, 0);
+                ChangeState(ST_SILENT_GUARD);
             }
+            break;
+
+        case ST_SAD_REBEL:
+            // 延时自动回 ST_IDLE
+            break;
+
+        case ST_SAD_DEEP:
+            // 延时自动跳 ST_SILENT_GUARD (由 FSM_OnEnter 处理)
             break;
 
         case ST_SILENT_GUARD:
             if (event == EVENT_HELLO) {
-                FSM_EnterState(ST_WAKE_UP_SUN);
+                ChangeState(ST_WAKE_UP_SUN);
                 TaskPlayer_PlayVoice(19, 3000, ST_WAKE);
             }
             break;
 
-        /* ===== 正面情绪 ===== */
+        case ST_WAKE_UP_SUN:
+            // 延时自动跳 ST_WAKE
+            break;
+
+        /* ==================== 3. 正面情绪 ==================== */
         case ST_HAPPY_RECV:
             if (event == EVENT_HAPPY || event == EVENT_YES) {
-                FSM_EnterState(ST_HAPPY_CELEBRATE);
+                ChangeState(ST_HAPPY_CELEBRATE);
                 TaskPlayer_PlayMusic(2);
                 TaskPlayer_PlayVoice(22, 0, 0);
             } else if (event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_HAPPY_SHY);
+                ChangeState(ST_HAPPY_SHY);
                 TaskPlayer_PlayVoice(23, 4000, ST_WAKE);
             }
             break;
 
         case ST_HAPPY_CELEBRATE:
             if (event == EVENT_YES || event == EVENT_HAPPY) {
-                FSM_EnterState(ST_HAPPY_END);
+                ChangeState(ST_HAPPY_END);
                 TaskPlayer_PlayVoice(24, 3000, ST_IDLE);
             } else if (event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_HAPPY_QUIET);
+                ChangeState(ST_HAPPY_QUIET);
                 TaskPlayer_PlayVoice(25, 3000, ST_WAKE);
             }
             break;
 
-        /* ===== 冷笑话 ===== */
+        case ST_HAPPY_SHY:
+        case ST_HAPPY_END:
+        case ST_HAPPY_QUIET:
+            // 延时自动跳转，不响应事件
+            break;
+
+        /* ==================== 4. 冷笑话模块 ==================== */
         case ST_JOKE_1:
             if (event == EVENT_YES || event == EVENT_HAPPY) {
-                FSM_EnterState(ST_JOKE_1_GOOD);
+                ChangeState(ST_JOKE_1_GOOD);
                 TaskPlayer_PlayVoice(32, 0, 0);
             } else if (event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_JOKE_1_BAD);
+                ChangeState(ST_JOKE_1_BAD);
                 TaskPlayer_PlayVoice(33, 3000, ST_JOKE_2);
+                // 3秒后自动跳 ST_JOKE_2 → FSM_OnEnter 播放笑话2
             }
             break;
 
         case ST_JOKE_1_GOOD:
             if (event == EVENT_YES) {
-                FSM_EnterState(ST_JOKE_2);
+                ChangeState(ST_JOKE_2);
                 TaskPlayer_PlayVoice(34, 0, 0);
             } else if (event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_WAKE);
+                ChangeState(ST_WAKE);
             }
             break;
 
-        /* ST_JOKE_1_BAD: 延时自动跳 ST_JOKE_2，FSM_OnEnter 播放 voice 34 */
+        case ST_JOKE_1_BAD:
+            // 延时自动跳 ST_JOKE_2 → OnEnter播放34
+            break;
 
         case ST_JOKE_2:
             if (event == EVENT_YES || event == EVENT_HAPPY) {
-                FSM_EnterState(ST_JOKE_2_GOOD);
+                ChangeState(ST_JOKE_2_GOOD);
                 TaskPlayer_PlayVoice(35, 0, 0);
             } else if (event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_JOKE_2_BAD);
+                ChangeState(ST_JOKE_2_BAD);
                 TaskPlayer_PlayVoice(36, 3000, ST_JOKE_3);
             }
             break;
 
         case ST_JOKE_2_GOOD:
             if (event == EVENT_YES) {
-                FSM_EnterState(ST_JOKE_3);
-                TaskPlayer_PlayVoice(37, 0, 0);
+                ChangeState(ST_JOKE_3);
+                // OnEnter 会自动播放37
             } else if (event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_WAKE);
+                ChangeState(ST_WAKE);
             }
             break;
 
-        /* ST_JOKE_2_BAD: 延时自动跳 ST_JOKE_3，FSM_OnEnter 播放 voice 37 */
+        case ST_JOKE_2_BAD:
+            // 延时自动跳 ST_JOKE_3 → OnEnter播放37
+            break;
 
         case ST_JOKE_3:
-            /* 笑话3播完后等一会儿自动进入结算 */
+            // 笑话3播完后，任何事件都推进到结算
             if (event == EVENT_YES || event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_JOKE_END);
-                TaskPlayer_PlayVoice(38, 0, 0);
+                ChangeState(ST_JOKE_END);
+                // OnEnter 会自动播放38
             }
             break;
 
         case ST_JOKE_END:
-            if (event == EVENT_YES) {
-                FSM_EnterState(ST_JOKE_WIN);
+            if (event == EVENT_YES || event == EVENT_HAPPY) {
+                ChangeState(ST_JOKE_WIN);
                 TaskPlayer_PlayVoice(39, 3000, ST_WAKE);
             } else if (event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_JOKE_LOSE);
+                ChangeState(ST_JOKE_LOSE);
                 TaskPlayer_PlayVoice(40, 4000, ST_GAME_START);
+                // 4秒后跳 ST_GAME_START → OnEnter播放41
             }
             break;
 
-        /* ST_JOKE_WIN/LOSE: 延时自动跳转，FSM_OnEnter 处理 */
+        case ST_JOKE_WIN:
+        case ST_JOKE_LOSE:
+            // 延时自动跳转
+            break;
 
-        /* ===== 游戏 ===== */
+        /* ==================== 5. 互动游戏 ==================== */
         case ST_GAME_START:
             if (event == EVENT_YES) {
-                FSM_EnterState(ST_GAME_Q1);
+                ChangeState(ST_GAME_Q1);
                 TaskPlayer_PlayVoice(42, 0, 0);
             } else if (event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_WAKE);
+                ChangeState(ST_WAKE);
             }
             break;
 
         case ST_GAME_Q1:
             if (event == EVENT_A) {
-                FSM_EnterState(ST_GAME_Q2_A);
+                ChangeState(ST_GAME_Q2_A);
                 TaskPlayer_PlayVoice(43, 0, 0);
             } else if (event == EVENT_B) {
-                FSM_EnterState(ST_GAME_Q2_B);
+                ChangeState(ST_GAME_Q2_B);
                 TaskPlayer_PlayVoice(44, 0, 0);
             } else if (event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_WAKE);
+                ChangeState(ST_WAKE);
             }
             break;
 
         case ST_GAME_Q2_A:
             if (event == EVENT_A) {
-                FSM_EnterState(ST_RES_SUNFLOWER);
+                ChangeState(ST_RES_SUNFLOWER);
                 TaskPlayer_PlayVoice(45, 8000, ST_GAME_OVER);
             } else if (event == EVENT_B) {
-                FSM_EnterState(ST_RES_CACTUS);
+                ChangeState(ST_RES_CACTUS);
                 TaskPlayer_PlayVoice(46, 8000, ST_GAME_OVER);
             } else if (event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_WAKE);
+                ChangeState(ST_WAKE);
             }
             break;
 
         case ST_GAME_Q2_B:
             if (event == EVENT_A) {
-                FSM_EnterState(ST_RES_MIMOSA);
+                ChangeState(ST_RES_MIMOSA);
                 TaskPlayer_PlayVoice(47, 8000, ST_GAME_OVER);
             } else if (event == EVENT_B) {
-                FSM_EnterState(ST_RES_MUSHROOM);
+                ChangeState(ST_RES_MUSHROOM);
                 TaskPlayer_PlayVoice(48, 8000, ST_GAME_OVER);
             } else if (event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_WAKE);
+                ChangeState(ST_WAKE);
             }
             break;
 
-        /* ST_RES_xxx: 延时自动跳 ST_GAME_OVER，FSM_OnEnter 播放 voice 49 */
         case ST_RES_SUNFLOWER:
         case ST_RES_CACTUS:
         case ST_RES_MIMOSA:
         case ST_RES_MUSHROOM:
-            /* 正在播放结果，等延时跳转即可 */
+            // 正在播放结果，延时自动跳 ST_GAME_OVER → OnEnter播放49
             break;
 
         case ST_GAME_OVER:
             if (event == EVENT_YES) {
-                FSM_EnterState(ST_GAME_HAPPY);
+                ChangeState(ST_GAME_HAPPY);
                 TaskPlayer_PlayVoice(50, 3000, ST_WAKE);
             } else if (event == EVENT_NO || event == EVENT_TIMEOUT) {
-                FSM_EnterState(ST_GAME_SAD);
+                ChangeState(ST_GAME_SAD);
                 TaskPlayer_PlayVoice(51, 3000, ST_WAKE);
             }
             break;
 
-        /* ST_GAME_HAPPY/SAD: 延时自动跳 ST_WAKE */
         case ST_GAME_HAPPY:
         case ST_GAME_SAD:
-        case ST_JOKE_WIN:
-        case ST_JOKE_LOSE:
-        case ST_JOKE_1_BAD:
-        case ST_JOKE_2_BAD:
-        case ST_BYE:
-        case ST_SAD_REBEL:
-        case ST_SAD_DEEP:
-        case ST_WAKE_UP_SUN:
-        case ST_HAPPY_SHY:
-        case ST_HAPPY_END:
-        case ST_HAPPY_QUIET:
-        case ST_EGG_1:
-            /* 这些状态都在等待 TaskPlayer 延时跳转，不响应用户输入 */
+            // 延时自动跳 ST_WAKE
             break;
 
+        /* ==================== 6. 彩蛋 ==================== */
+        case ST_EGG_1:
+            // 延时自动跳 ST_WAKE
+            break;
+
+        /* ==================== 7. 兜底 ==================== */
         default:
-            FSM_EnterState(ST_WAKE);
+            Debug_Print("[FSM] Unknown state, reset to WAKE\r\n");
+            ChangeState(ST_WAKE);
             break;
     }
 }

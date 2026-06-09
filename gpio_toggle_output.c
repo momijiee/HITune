@@ -6,44 +6,59 @@
 #include "task_clock.h"
 #include "task_display.h"
 #include "bsp_adc.h"
+#include "oled.h"
 #include <stdio.h>
 
 int main(void)
 {
-    /* ======== 1. 硬件初始化 ======== */
-    board_init();       // 内部 SYSCFG_DL_init() → SysTick LOAD 被设成31
-
-    /* ======== 2. 立刻重配 SysTick（覆盖 sysconfig 的配置） ======== */
-    SysTick_Init();     // LOAD = 31999, 1ms中断
-
-    /* ======== 3. 验证 ======== */
-    printf("SysTick LOAD = %lu (expect 31999)\r\n", (unsigned long)SysTick->LOAD);
-
-    {
-        uint32_t t0 = GetTick();
-        delay_ms(1000);
-        uint32_t t1 = GetTick();
-        printf("1s test: tick diff = %lu (expect ~1000)\r\n",
-               (unsigned long)(t1 - t0));
+    board_init();
+    SysTick_Init();
+    
+    printf("=== PLAYER DEBUG ===\r\n");
+    
+    /* ---- 测试A：最原始的串口发送，绕过所有封装 ---- */
+    printf("TestA: Raw UART send...\r\n");
+    
+    // 手动发一帧 SetVolume=20 的完整指令
+    // 帧格式: 7E FF 06 06 00 00 14 xx xx EF
+    uint8_t frame[] = {0x7E, 0xFF, 0x06, 0x06, 0x00, 0x00, 0x14, 0xFF, 0xE6, 0xEF};
+    for (int i = 0; i < 10; i++) {
+        while(DL_UART_isBusy(UART_PLR_INST) == true);
+        DL_UART_Main_transmitData(UART_PLR_INST, frame[i]);
     }
-
-    /* ======== 4. 各任务初始化 ======== */
-    TaskDisplay_Init();     // OLED初始化（现在delay_ms正常了）
-    TaskFSM_Init();
-    TaskTracker_Init();
-    TaskClock_Init();
-
-    printf("=== Flower Companion v2.2 ===\r\n");
-
-    /* ======== 5. 主循环 ======== */
-    while (1)
-    {
-        TaskPlayer_Run();
-        TaskFSM_Run();
-        TaskTracker_Run();
-        TaskClock_Run();
-        TaskDisplay_Run();
+    delay_ms(500);
+    
+    // 手动发一帧 PlayVoice(2): CMD=0x14, Para=0x0002
+    // Checksum = 0 - (0xFF+0x06+0x14+0x00+0x00+0x02) = 0 - 0x11B = 0xFEE5
+    uint8_t play[] = {0x7E, 0xFF, 0x06, 0x14, 0x00, 0x00, 0x02, 0xFE, 0xE5, 0xEF};
+    for (int i = 0; i < 10; i++) {
+        while(DL_UART_isBusy(UART_PLR_INST) == true);
+        DL_UART_Main_transmitData(UART_PLR_INST, play[i]);
     }
+    
+    printf("TestA: Sent. Wait 5s...\r\n");
+    delay_ms(5000);
+    
+    /* ---- 测试B：确认UART_PLR_INST是否正确 ---- */
+    printf("TestB: Ping on PLR UART TX pin...\r\n");
+    // 连续发0x55（方便示波器/逻辑分析仪看波形）
+    for (int i = 0; i < 20; i++) {
+        while(DL_UART_isBusy(UART_PLR_INST) == true);
+        DL_UART_Main_transmitData(UART_PLR_INST, 0x55);
+    }
+    printf("TestB: Done.\r\n");
+    delay_ms(1000);
+
+    /* ---- 测试C：用你的封装函数 ---- */
+    printf("TestC: Player_SetVolume + Player_PlayVoice...\r\n");
+    Player_SetVolume(25);
+    delay_ms(200);
+    Player_PlayVoice(2);
+    printf("TestC: Sent. Wait 5s...\r\n");
+    delay_ms(5000);
+    
+    printf("=== ALL TESTS DONE ===\r\n");
+    while(1) {}
 }
 
 /* ======== 中断 ======== */
