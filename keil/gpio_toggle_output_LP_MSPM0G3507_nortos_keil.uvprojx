@@ -474,6 +474,26 @@
               <FileType>5</FileType>
               <FilePath>..\BSP\bsp_ds1302.h</FilePath>
             </File>
+            <File>
+              <FileName>bsp_adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp_adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_adc.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\bsp_adc.h</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_servo.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\BSP\bsp_servo.c</FilePath>
+            </File>
+            <File>
+              <FileName>bsp_servo.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\BSP\bsp_servo.h</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
