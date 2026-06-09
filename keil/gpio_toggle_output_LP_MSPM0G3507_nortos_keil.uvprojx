@@ -340,7 +340,7 @@
               <MiscControls></MiscControls>
               <Define>__MSPM0G3507__</Define>
               <Undefine></Undefine>
-              <IncludePath>../;../../../../../../source/third_party/CMSIS/Core/Include;../../../../../../source;..\BSP</IncludePath>
+              <IncludePath>../;../../../../../../source/third_party/CMSIS/Core/Include;../../../../../../source;..\BSP;..\Tasks</IncludePath>
             </VariousControls>
           </Cads>
           <Aads>
@@ -493,6 +493,71 @@
               <FileName>bsp_servo.h</FileName>
               <FileType>5</FileType>
               <FilePath>..\BSP\bsp_servo.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>Tasks</GroupName>
+          <Files>
+            <File>
+              <FileName>soft_timer.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Tasks\soft_timer.c</FilePath>
+            </File>
+            <File>
+              <FileName>soft_timer.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Tasks\soft_timer.h</FilePath>
+            </File>
+            <File>
+              <FileName>task_clock.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Tasks\task_clock.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_clock.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Tasks\task_clock.h</FilePath>
+            </File>
+            <File>
+              <FileName>task_display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Tasks\task_display.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_display.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Tasks\task_display.h</FilePath>
+            </File>
+            <File>
+              <FileName>task_fsm.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Tasks\task_fsm.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_fsm.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Tasks\task_fsm.h</FilePath>
+            </File>
+            <File>
+              <FileName>task_player.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Tasks\task_player.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_player.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Tasks\task_player.h</FilePath>
+            </File>
+            <File>
+              <FileName>task_tracker.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>..\Tasks\task_tracker.c</FilePath>
+            </File>
+            <File>
+              <FileName>task_tracker.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>..\Tasks\task_tracker.h</FilePath>
             </File>
           </Files>
         </Group>

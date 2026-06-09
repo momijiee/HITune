@@ -1,4 +1,4 @@
-./objects/gpio_toggle_output.o: ..\gpio_toggle_output.c ..\board.h \
+./objects/task_fsm.o: ..\Tasks\task_fsm.c ..\Tasks\task_fsm.h ..\board.h \
   ..\ti_msp_dl_config.h ..\..\..\..\..\..\source\ti\devices\msp\msp.h \
   ..\..\..\..\..\..\source\ti\devices\DeviceFamily.h \
   ..\..\..\..\..\..\source\ti\devices\msp\m0p\mspm0g350x.h \
@@ -91,7 +91,5 @@
   ..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h \
   ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h \
   ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h \
-  ..\Tasks\soft_timer.h ..\Tasks\task_fsm.h ..\BSP\bsp_voice.h \
-  ..\Tasks\task_player.h ..\BSP\bsp_player.h ..\Tasks\task_tracker.h \
-  ..\BSP\bsp_servo.h ..\Tasks\task_clock.h ..\Tasks\task_display.h \
-  D:\Software\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h
+  ..\BSP\bsp_voice.h ..\Tasks\task_player.h ..\BSP\bsp_player.h \
+  ..\Tasks\soft_timer.h

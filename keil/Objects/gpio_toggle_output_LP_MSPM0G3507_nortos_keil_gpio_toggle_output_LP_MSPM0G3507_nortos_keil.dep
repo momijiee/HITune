@@ -1,6 +1,7 @@
 Dependencies for Project 'gpio_toggle_output_LP_MSPM0G3507_nortos_keil', Target 'gpio_toggle_output_LP_MSPM0G3507_nortos_keil': (DO NOT MODIFY !)
 CompilerVersion: 6180000::V6.18::ARMCLANG
-F (../gpio_toggle_output.c)(0x6A2815F6)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/gpio_toggle_output.o -MD)
+F (../gpio_toggle_output.c)(0x6A281D57)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/gpio_toggle_output.o -MD)
+I (..\board.h)(0x6A2526F0)
 I (..\ti_msp_dl_config.h)(0x6A2683C5)
 I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\devices\DeviceFamily.h)(0x69A1D744)
@@ -94,14 +95,20 @@ I (..\..\..\..\..\..\source\ti\driverlib\dl_vref.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
-I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x625260D6)
-I (..\board.h)(0x6A2526F0)
+I (..\Tasks\soft_timer.h)(0x6A281BE3)
+I (..\Tasks\task_fsm.h)(0x6A281CF8)
+I (..\BSP\bsp_voice.h)(0x6A1F99B1)
+I (..\Tasks\task_player.h)(0x6A281CF9)
+I (..\BSP\bsp_player.h)(0x6A1F99B1)
+I (..\Tasks\task_tracker.h)(0x6A281CEE)
 I (..\BSP\bsp_servo.h)(0x6A28188D)
-I (..\BSP\bsp_adc.h)(0x6A281305)
+I (..\Tasks\task_clock.h)(0x6A281CF2)
+I (..\Tasks\task_display.h)(0x6A281CF5)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x625260D6)
 F (../gpio_toggle_output.syscfg)(0x6A2683C5)()
 F (startup_mspm0g350x_uvision.s)(0x6A1F8DC3)(--target=arm-arm-none-eabi -mcpu=cortex-m0plus -masm=auto -c-gdwarf-4-Wa,armasm,--pd,"__UVISION_VERSION SETA 537" -Wa,armasm,--pd,"__MSPM0G3507__ SETA 1"-o ./objects/startup_mspm0g350x_uvision.o)
 F (../ti_msp_dl_config.h)(0x6A2683C5)()
-F (../ti_msp_dl_config.c)(0x6A2683C5)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/ti_msp_dl_config.o -MD)
+F (../ti_msp_dl_config.c)(0x6A2683C5)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/ti_msp_dl_config.o -MD)
 I (..\ti_msp_dl_config.h)(0x6A2683C5)
 I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\devices\DeviceFamily.h)(0x69A1D744)
@@ -195,7 +202,7 @@ I (..\..\..\..\..\..\source\ti\driverlib\dl_vref.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
-F (..\board.c)(0x6A2526F0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/board.o -MD)
+F (..\board.c)(0x6A2526F0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/board.o -MD)
 I (..\board.h)(0x6A2526F0)
 I (..\ti_msp_dl_config.h)(0x6A2683C5)
 I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
@@ -293,7 +300,7 @@ I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
 I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x625260D6)
 F (..\board.h)(0x6A2526F0)()
 F (..\BSP\bsp_voice.h)(0x6A1F99B1)()
-F (..\BSP\bsp_voice.c)(0x6A1F99B1)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bsp_voice.o -MD)
+F (..\BSP\bsp_voice.c)(0x6A1F99B1)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bsp_voice.o -MD)
 I (..\BSP\bsp_voice.h)(0x6A1F99B1)
 I (..\ti_msp_dl_config.h)(0x6A2683C5)
 I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
@@ -388,7 +395,7 @@ I (..\..\..\..\..\..\source\ti\driverlib\dl_vref.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
-F (..\BSP\bsp_player.c)(0x6A1F99B1)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bsp_player.o -MD)
+F (..\BSP\bsp_player.c)(0x6A1F99B1)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bsp_player.o -MD)
 I (..\BSP\bsp_player.h)(0x6A1F99B1)
 I (..\ti_msp_dl_config.h)(0x6A2683C5)
 I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
@@ -485,7 +492,7 @@ I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
 F (..\BSP\bsp_player.h)(0x6A1F99B1)()
 F (..\BSP\bmp.h)(0x6A2526F0)()
-F (..\BSP\oled.c)(0x6A2526F0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/oled.o -MD)
+F (..\BSP\oled.c)(0x6A2526F0)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/oled.o -MD)
 I (..\BSP\oled.h)(0x6A2526F0)
 I (..\board.h)(0x6A2526F0)
 I (..\ti_msp_dl_config.h)(0x6A2683C5)
@@ -585,7 +592,7 @@ I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x625260D6)
 I (..\BSP\oledfont.h)(0x6A2526F0)
 F (..\BSP\oled.h)(0x6A2526F0)()
 F (..\BSP\oledfont.h)(0x6A2526F0)()
-F (..\BSP\bsp_ds1302.c)(0x6A2583F4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bsp_ds1302.o -MD)
+F (..\BSP\bsp_ds1302.c)(0x6A2583F4)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bsp_ds1302.o -MD)
 I (..\BSP\bsp_ds1302.h)(0x6A2583E6)
 I (..\ti_msp_dl_config.h)(0x6A2683C5)
 I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
@@ -682,7 +689,7 @@ I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
 I (..\board.h)(0x6A2526F0)
 F (..\BSP\bsp_ds1302.h)(0x6A2583E6)()
-F (..\BSP\bsp_adc.c)(0x6A281312)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bsp_adc.o -MD)
+F (..\BSP\bsp_adc.c)(0x6A281312)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bsp_adc.o -MD)
 I (..\BSP\bsp_adc.h)(0x6A281305)
 I (..\ti_msp_dl_config.h)(0x6A2683C5)
 I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
@@ -778,7 +785,7 @@ I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
 F (..\BSP\bsp_adc.h)(0x6A281305)()
-F (..\BSP\bsp_servo.c)(0x6A2812F5)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bsp_servo.o -MD)
+F (..\BSP\bsp_servo.c)(0x6A2812F5)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/bsp_servo.o -MD)
 I (..\BSP\bsp_servo.h)(0x6A28188D)
 I (..\ti_msp_dl_config.h)(0x6A2683C5)
 I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
@@ -874,3 +881,601 @@ I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
 I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
 F (..\BSP\bsp_servo.h)(0x6A28188D)()
+F (..\Tasks\soft_timer.c)(0x6A281BEC)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/soft_timer.o -MD)
+I (..\Tasks\soft_timer.h)(0x6A281BE3)
+I (..\board.h)(0x6A2526F0)
+I (..\ti_msp_dl_config.h)(0x6A2683C5)
+I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\DeviceFamily.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x625260D8)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_version.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_compiler.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_armclang.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x625260D6)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\mpu_armv7.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\driverlib.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_adc12.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\math.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_core.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aes.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aesadv.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crcp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpamp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2s.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_iwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lfss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_keystorectl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lcd.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_npu.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_opa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_a.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_b.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_scratchpad.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spgss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_tamperio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timera.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerb.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerg.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_extend.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_main.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicomm.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2cc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2ct.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommspi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommuart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
+F (..\Tasks\soft_timer.h)(0x6A281BE3)()
+F (..\Tasks\task_clock.c)(0x6A281CF3)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_clock.o -MD)
+I (..\Tasks\task_clock.h)(0x6A281CF2)
+I (..\board.h)(0x6A2526F0)
+I (..\ti_msp_dl_config.h)(0x6A2683C5)
+I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\DeviceFamily.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x625260D8)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_version.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_compiler.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_armclang.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x625260D6)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\mpu_armv7.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\driverlib.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_adc12.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\math.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_core.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aes.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aesadv.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crcp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpamp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2s.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_iwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lfss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_keystorectl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lcd.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_npu.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_opa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_a.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_b.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_scratchpad.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spgss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_tamperio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timera.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerb.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerg.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_extend.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_main.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicomm.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2cc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2ct.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommspi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommuart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
+I (..\Tasks\soft_timer.h)(0x6A281BE3)
+F (..\Tasks\task_clock.h)(0x6A281CF2)()
+F (..\Tasks\task_display.c)(0x6A281CED)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_display.o -MD)
+I (..\Tasks\task_display.h)(0x6A281CF5)
+I (..\board.h)(0x6A2526F0)
+I (..\ti_msp_dl_config.h)(0x6A2683C5)
+I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\DeviceFamily.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x625260D8)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_version.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_compiler.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_armclang.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x625260D6)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\mpu_armv7.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\driverlib.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_adc12.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\math.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_core.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aes.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aesadv.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crcp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpamp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2s.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_iwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lfss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_keystorectl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lcd.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_npu.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_opa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_a.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_b.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_scratchpad.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spgss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_tamperio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timera.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerb.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerg.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_extend.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_main.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicomm.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2cc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2ct.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommspi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommuart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
+I (..\Tasks\task_clock.h)(0x6A281CF2)
+I (..\Tasks\task_fsm.h)(0x6A281CF8)
+I (..\BSP\bsp_voice.h)(0x6A1F99B1)
+I (..\Tasks\soft_timer.h)(0x6A281BE3)
+I (..\BSP\oled.h)(0x6A2526F0)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdlib.h)(0x625260D6)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdio.h)(0x625260D6)
+F (..\Tasks\task_display.h)(0x6A281CF5)()
+F (..\Tasks\task_fsm.c)(0x6A281CEF)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_fsm.o -MD)
+I (..\Tasks\task_fsm.h)(0x6A281CF8)
+I (..\board.h)(0x6A2526F0)
+I (..\ti_msp_dl_config.h)(0x6A2683C5)
+I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\DeviceFamily.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x625260D8)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_version.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_compiler.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_armclang.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x625260D6)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\mpu_armv7.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\driverlib.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_adc12.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\math.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_core.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aes.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aesadv.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crcp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpamp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2s.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_iwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lfss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_keystorectl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lcd.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_npu.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_opa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_a.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_b.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_scratchpad.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spgss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_tamperio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timera.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerb.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerg.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_extend.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_main.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicomm.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2cc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2ct.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommspi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommuart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
+I (..\BSP\bsp_voice.h)(0x6A1F99B1)
+I (..\Tasks\task_player.h)(0x6A281CF9)
+I (..\BSP\bsp_player.h)(0x6A1F99B1)
+I (..\Tasks\soft_timer.h)(0x6A281BE3)
+F (..\Tasks\task_fsm.h)(0x6A281CF8)()
+F (..\Tasks\task_player.c)(0x6A281C3B)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_player.o -MD)
+I (..\Tasks\task_player.h)(0x6A281CF9)
+I (..\board.h)(0x6A2526F0)
+I (..\ti_msp_dl_config.h)(0x6A2683C5)
+I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\DeviceFamily.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x625260D8)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_version.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_compiler.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_armclang.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x625260D6)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\mpu_armv7.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\driverlib.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_adc12.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\math.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_core.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aes.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aesadv.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crcp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpamp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2s.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_iwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lfss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_keystorectl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lcd.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_npu.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_opa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_a.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_b.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_scratchpad.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spgss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_tamperio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timera.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerb.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerg.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_extend.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_main.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicomm.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2cc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2ct.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommspi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommuart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
+I (..\BSP\bsp_player.h)(0x6A1F99B1)
+I (..\Tasks\soft_timer.h)(0x6A281BE3)
+F (..\Tasks\task_player.h)(0x6A281CF9)()
+F (..\Tasks\task_tracker.c)(0x6A281CA1)(-xc -std=c99 --target=arm-arm-none-eabi -mcpu=cortex-m0plus -c-fno-rtti -funsigned-char -fshort-enums -fshort-wchar-gdwarf-4 -O2 -ffunction-sections -Wno-packed -Wno-missing-variable-declarations -Wno-missing-prototypes -Wno-missing-noreturn -Wno-sign-conversion -Wno-nonportable-include-path -Wno-reserved-id-macro -Wno-unused-macros -Wno-documentation-unknown-command -Wno-documentation -Wno-license-management -Wno-parentheses-equality -Wno-reserved-identifier -Wno-covered-switch-default -Wno-unreachable-code-break -I ../ -I ../../../../../../source/third_party/CMSIS/Core/Include -I ../../../../../../source -I ../BSP -I ../Tasks-D__UVISION_VERSION="537" -D__MSPM0G3507__ -D__MSPM0G3507__-o ./objects/task_tracker.o -MD)
+I (..\Tasks\task_tracker.h)(0x6A281CEE)
+I (..\board.h)(0x6A2526F0)
+I (..\ti_msp_dl_config.h)(0x6A2683C5)
+I (..\..\..\..\..\..\source\ti\devices\msp\msp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\DeviceFamily.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\m0p\mspm0g350x.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdint.h)(0x625260D8)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stdbool.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\core_cm0plus.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_version.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_compiler.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\cmsis_armclang.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_compat.h)(0x625260D6)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\arm_acle.h)(0x625260D6)
+I (..\..\..\..\..\..\source\third_party\CMSIS\Core\Include\mpu_armv7.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_adc12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_aes.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_gptimer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_iomux.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_oa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wuc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\hw_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_cpuss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_debugss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\hw_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\devices\msp\peripherals\m0p\sysctl\hw_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\driverlib.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_adc12.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\math.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_factoryregion.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_core.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aes.h)(0x69A1D744)
+I (D:\Software\Keil_v5\ARM\ARMCLANG\include\stddef.h)(0x625260D6)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_aesadv.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_comp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_crcp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dac12.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_dma.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_flashctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_sysctl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\sysctl\dl_sysctl_mspm0g1x0x_g3x0x.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpamp.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_gpio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2c.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_i2s.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_iwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lfss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_keystorectl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_lcd.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mathacl.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_mcan.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_npu.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_opa.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_common.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_a.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_rtc_b.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_scratchpad.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spgss.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_spi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_tamperio.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timera.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timer.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerb.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_timerg.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_trng.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_extend.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_uart_main.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicomm.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2cc.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommi2ct.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommspi.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_unicommuart.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_vref.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h)(0x69A1D744)
+I (..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h)(0x69A1D744)
+I (..\BSP\bsp_servo.h)(0x6A28188D)
+I (..\Tasks\soft_timer.h)(0x6A281BE3)
+F (..\Tasks\task_tracker.h)(0x6A281CEE)()
