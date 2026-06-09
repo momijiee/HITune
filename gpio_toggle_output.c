@@ -5,29 +5,49 @@
 #include "task_tracker.h"
 #include "task_clock.h"
 #include "task_display.h"
+#include "bsp_adc.h"
 #include <stdio.h>
 
 int main(void)
 {
     /* ======== 1. 硬件初始化 ======== */
-    board_init();       // GPIO, UART, etc.
-    SysTick_Init();     // 1ms系统节拍
+    board_init();       // 内部 SYSCFG_DL_init() → SysTick LOAD 被设成31
 
-    /* ======== 2. 各任务初始化 ======== */
-    TaskDisplay_Init(); // OLED (内含 OLED_Init)
-    TaskFSM_Init();     // 语音状态机 + 播放器
-    TaskTracker_Init(); // 追光舵机
-    TaskClock_Init();   // 电子时钟
+    /* ======== 2. 立刻重配 SysTick（覆盖 sysconfig 的配置） ======== */
+    SysTick_Init();     // LOAD = 31999, 1ms中断
 
-    printf("=== Flower Companion v2.0 (Non-Blocking) ===\r\n");
+    /* ======== 3. 验证 ======== */
+    printf("SysTick LOAD = %lu (expect 31999)\r\n", (unsigned long)SysTick->LOAD);
 
-    /* ======== 3. 主循环 ======== */
+    {
+        uint32_t t0 = GetTick();
+        delay_ms(1000);
+        uint32_t t1 = GetTick();
+        printf("1s test: tick diff = %lu (expect ~1000)\r\n",
+               (unsigned long)(t1 - t0));
+    }
+
+    /* ======== 4. 各任务初始化 ======== */
+    TaskDisplay_Init();     // OLED初始化（现在delay_ms正常了）
+    TaskFSM_Init();
+    TaskTracker_Init();
+    TaskClock_Init();
+
+    printf("=== Flower Companion v2.2 ===\r\n");
+
+    /* ======== 5. 主循环 ======== */
     while (1)
     {
-        TaskPlayer_Run();    // [最高] 播放器延时管理
-        TaskFSM_Run();       // [高]   语音轮询 + 状态机
-        TaskTracker_Run();   // [中]   追光ADC + 舵机
-        TaskClock_Run();     // [低]   秒自增
-        TaskDisplay_Run();   // [低]   OLED刷新
+        TaskPlayer_Run();
+        TaskFSM_Run();
+        TaskTracker_Run();
+        TaskClock_Run();
+        TaskDisplay_Run();
     }
+}
+
+/* ======== 中断 ======== */
+void ADC_INST_IRQHandler(void)
+{
+    BSP_ADC_IRQHandler();
 }

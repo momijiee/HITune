@@ -19,38 +19,31 @@ void board_init(void)
 	printf("Board Init [[ ** LCKFB ** ]]\r\n");
 }
 
-// ????????????us??
-void delay_us(unsigned long __us) 
+void delay_us(unsigned long __us)
 {
     uint32_t ticks;
     uint32_t told, tnow, tcnt = 38;
 
-    // ???????? = ????? * ???????
-    ticks = __us * (32000000 / 1000000);
+    ticks = __us * (CPUCLK_FREQ / 1000000UL);  // ← 用宏替代硬编码
 
-    // ?????SysTick?
     told = SysTick->VAL;
 
     while (1)
     {
-        // ?????????SysTick?
         tnow = SysTick->VAL;
-
         if (tnow != told)
         {
             if (tnow < told)
                 tcnt += told - tnow;
             else
                 tcnt += SysTick->LOAD - tnow + told;
-
             told = tnow;
-
-            // ???????????,?????
             if (tcnt >= ticks)
                 break;
         }
     }
 }
+
 
 // ????????????ms??
 void delay_ms(unsigned long ms) 

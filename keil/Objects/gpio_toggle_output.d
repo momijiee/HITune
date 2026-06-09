@@ -93,5 +93,5 @@
   ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h \
   ..\Tasks\soft_timer.h ..\Tasks\task_fsm.h ..\BSP\bsp_voice.h \
   ..\Tasks\task_player.h ..\BSP\bsp_player.h ..\Tasks\task_tracker.h \
-  ..\BSP\bsp_servo.h ..\Tasks\task_clock.h ..\Tasks\task_display.h \
+  ..\Tasks\task_clock.h ..\Tasks\task_display.h ..\BSP\bsp_adc.h \
   D:\Software\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h

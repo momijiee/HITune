@@ -92,4 +92,5 @@
   ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h \
   ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h \
   ..\BSP\bsp_voice.h ..\Tasks\task_player.h ..\BSP\bsp_player.h \
-  ..\Tasks\soft_timer.h
+  ..\Tasks\soft_timer.h \
+  D:\Software\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h

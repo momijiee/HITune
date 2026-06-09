@@ -92,4 +92,5 @@
   ..\..\..\..\..\..\source\ti\driverlib\dl_wwdt.h \
   ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_interrupt.h \
   ..\..\..\..\..\..\source\ti\driverlib\m0p\dl_systick.h \
-  ..\BSP\bsp_servo.h ..\Tasks\soft_timer.h
+  ..\Tasks\soft_timer.h ..\BSP\bsp_servo.h ..\BSP\bsp_adc.h \
+  D:\Software\Keil_v5\ARM\ARMCLANG\Bin\..\include\stdio.h

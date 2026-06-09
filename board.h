@@ -14,6 +14,10 @@
 
 #include "ti_msp_dl_config.h"
 
+#ifndef CPUCLK_FREQ
+#define CPUCLK_FREQ     32000000UL   // ? soft_timer.h ????
+#endif
+
 void board_init(void);
 
 void delay_us(unsigned long __us);
